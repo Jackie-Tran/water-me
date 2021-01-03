@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import {
   ImageBackground,
   StyleSheet,
@@ -9,9 +9,19 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialIcons } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import DismissKeyboard from '../../components/dismiss-keyboard';
 
+const generateEyeIcon = (isHidden: boolean): ReactElement => {
+  if (isHidden) {
+    return <MaterialCommunityIcons name="eye-off" size={24} color="#A7A7A7" />
+  } 
+    return <MaterialIcons name="remove-red-eye" size={24} color="#A7A7A7" />;
+};
+
 const LoginScreen: React.FC = () => {
+  const [isHidden, setHidden] = React.useState<boolean>(true);
+
   return (
     <ImageBackground
       style={styles.background}
@@ -24,11 +34,23 @@ const LoginScreen: React.FC = () => {
             <View style={styles.loginContainer}>
               <View style={styles.textInput}>
                 <MaterialIcons name="email" size={28} color="#52B788" />
-                <TextInput style={styles.input} placeholder="email" />
+                <TextInput
+                  style={styles.input}
+                  textContentType="emailAddress"
+                  placeholder="email"
+                />
               </View>
               <View style={styles.textInput}>
                 <MaterialIcons name="lock" size={28} color="#52B788" />
-                <TextInput style={styles.input} placeholder="password" />
+                <TextInput
+                  style={styles.input}
+                  textContentType="password"
+                  secureTextEntry={isHidden}
+                  placeholder="password"
+                />
+                <TouchableOpacity style={{ marginRight: '3%' }} onPress={() => setHidden(!isHidden)}>
+                  {generateEyeIcon(isHidden)}
+                </TouchableOpacity>
               </View>
               <TouchableOpacity>
                 <Text
@@ -93,6 +115,7 @@ const styles = StyleSheet.create({
     fontFamily: 'WorkSans_400Regular',
     fontSize: 24,
     flex: 1,
+    color: '#A7A7A7',
   },
   text: {
     fontFamily: 'WorkSans_400Regular',
