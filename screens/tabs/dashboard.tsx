@@ -46,6 +46,18 @@ const DashboardScreen: React.FC = () => {
                     horizontal
                 />
             </View>
+            <View style={styles.section}>
+                <View style={styles.sectionHeader}>
+                    <Text style={styles.sectionTitle}>Water Soon</Text>
+                </View>
+                <FlatList 
+                    style={{ marginLeft: '5%', marginTop: '5%', paddingBottom: 25 }}
+                    data={data}
+                    renderItem={ ({ item }) => <PlantCard name={item.name}/> }
+                    keyExtractor={(item, index) => index.toString()}
+                    horizontal
+                />
+            </View>
         </SafeAreaView>
     )
 }
