@@ -11,16 +11,28 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialIcons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import DismissKeyboard from '../../components/dismiss-keyboard';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../../NavigationTypes';
 
 const generateEyeIcon = (isHidden: boolean): ReactElement => {
   if (isHidden) {
-    return <MaterialCommunityIcons name="eye-off" size={24} color="#A7A7A7" />
-  } 
-    return <MaterialIcons name="remove-red-eye" size={24} color="#A7A7A7" />;
+    return <MaterialCommunityIcons name="eye-off" size={24} color="#A7A7A7" />;
+  }
+  return <MaterialIcons name="remove-red-eye" size={24} color="#A7A7A7" />;
 };
 
-const LoginScreen: React.FC = () => {
+type NavProps = StackNavigationProp<RootStackParamList, 'Login'>;
+
+type Props = {
+  navigation: NavProps;
+};
+
+const LoginScreen: React.FC<Props> = ({ navigation }) => {
   const [isHidden, setHidden] = React.useState<boolean>(true);
+
+  const handleLoginPress = () => {
+    navigation.push('Tabs');
+  };
 
   return (
     <ImageBackground
@@ -48,7 +60,10 @@ const LoginScreen: React.FC = () => {
                   secureTextEntry={isHidden}
                   placeholder="password"
                 />
-                <TouchableOpacity style={{ marginRight: '3%' }} onPress={() => setHidden(!isHidden)}>
+                <TouchableOpacity
+                  style={{ marginRight: '3%' }}
+                  onPress={() => setHidden(!isHidden)}
+                >
                   {generateEyeIcon(isHidden)}
                 </TouchableOpacity>
               </View>
@@ -62,7 +77,7 @@ const LoginScreen: React.FC = () => {
                   Forgot your password?
                 </Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.button}>
+              <TouchableOpacity style={styles.button} onPress={handleLoginPress}>
                 <Text style={styles.buttonText}>Log In</Text>
               </TouchableOpacity>
               <View style={{ flexDirection: 'row' }}>
