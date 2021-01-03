@@ -8,6 +8,7 @@ import { RootStackParamList } from './NavigationTypes';
 import LoginScreen from './screens/login';
 import TabsScreen from './screens/tabs';
 import PlantsScreen from './screens/plants';
+import PlantScreen from './screens/plant';
 
 import {
   Merriweather_300Light,
@@ -85,6 +86,7 @@ export default function App() {
           <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen name="Tabs"  options={{ gestureEnabled: false }} component={TabsScreen} />
           <Stack.Screen name="Your Plants" component={PlantsScreen} />
+          <Stack.Screen name="Plant" component={PlantScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaProvider>

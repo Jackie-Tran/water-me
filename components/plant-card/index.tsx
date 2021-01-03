@@ -1,17 +1,23 @@
 import React from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../../NavigationTypes';
 
 type Props = {
   name: string;
-  marginLeft?: string | number;
-  marginRight?: string | number;
-  marginTop?: string | number;
-  marginBottom?: string | number;
 };
 
-const PlantCard: React.FC<Props> = ({ name, marginTop, marginBottom, marginLeft, marginRight }) => {
+const PlantCard: React.FC<Props> = ({ name }) => {
+
+    const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+
+    const handlePress = () => {
+        navigation.navigate('Plant');
+    }
+
   return (
-    <TouchableOpacity style={[styles.container, { marginTop, marginBottom, marginLeft, marginRight }]}>
+    <TouchableOpacity style={styles.container} onPress={handlePress}>
       <Image
         style={styles.image}
         source={require('../../assets/dashboard/plant.jpg')}
@@ -25,7 +31,7 @@ const PlantCard: React.FC<Props> = ({ name, marginTop, marginBottom, marginLeft,
           alignItems: 'flex-start',
         }}
       >
-        <Text style={styles.text}>Cassia</Text>
+        <Text style={styles.text}>{ name }</Text>
       </View>
     </TouchableOpacity>
   );
