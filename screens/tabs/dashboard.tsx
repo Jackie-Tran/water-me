@@ -1,6 +1,7 @@
 import React from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import PlantCard from '../../components/plant-card';
 
 const DashboardScreen: React.FC = () => {
     return (
@@ -19,12 +20,11 @@ const DashboardScreen: React.FC = () => {
                         <Text style={styles.buttonText}>See All</Text>
                     </TouchableOpacity>
                 </View>
+                <PlantCard />
             </View>
         </SafeAreaView>
     )
 }
-
-export default DashboardScreen;
 
 const styles = StyleSheet.create({
     header: {
@@ -89,4 +89,6 @@ const styles = StyleSheet.create({
         fontSize: 18,
         color: 'white',
     }
-})
+});
+
+export default DashboardScreen;
