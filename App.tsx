@@ -6,6 +6,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { RootStackParamList } from './NavigationTypes';
 import LoginScreen from './screens/login';
+import TabsScreen from './screens/tabs';
 import {
   Merriweather_300Light,
   Merriweather_300Light_Italic,
@@ -80,6 +81,7 @@ export default function App() {
       <NavigationContainer>
         <Stack.Navigator screenOptions={{ headerShown: false }}>
           <Stack.Screen name="Login" component={LoginScreen} />
+          <Stack.Screen name="Tabs"  options={{ gestureEnabled: false }} component={TabsScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaProvider>
