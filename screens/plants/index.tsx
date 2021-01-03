@@ -1,63 +1,84 @@
 import React from 'react';
-import { FlatList, StyleSheet, Text, View } from 'react-native';
+import {
+  FlatList,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialIcons } from '@expo/vector-icons';
 import PlantCard from '../../components/plant-card';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../../NavigationTypes';
 
 const data = [
-    {
-        name: 'Cassia'
-    },
-    {
-        name: 'Adonis'
-    },
-    {
-        name: 'Zinnia'
-    },
-    {
-        name: 'Poppy'
-    },
-    {
-        name: 'Marigold'
-    },
-    {
-        name: 'Marigold'
-    },
-    {
-        name: 'Marigold'
-    },
-    {
-        name: 'Marigold'
-    },
-    {
-        name: 'Marigold'
-    },
-    {
-        name: 'Marigold'
-    },
-    {
-        name: 'Marigold'
-    },
+  {
+    name: 'Cassia',
+  },
+  {
+    name: 'Adonis',
+  },
+  {
+    name: 'Zinnia',
+  },
+  {
+    name: 'Poppy',
+  },
+  {
+    name: 'Marigold',
+  },
+  {
+    name: 'Marigold',
+  },
+  {
+    name: 'Marigold',
+  },
+  {
+    name: 'Marigold',
+  },
+  {
+    name: 'Marigold',
+  },
+  {
+    name: 'Marigold',
+  },
+  {
+    name: 'Marigold',
+  },
 ];
 
-const PlantsScreen: React.FC = () => {
+type NavProp = StackNavigationProp<RootStackParamList, 'Your Plants'>;
+
+type Props = {
+  navigation: NavProp;
+};
+
+const PlantsScreen: React.FC<Props> = ({ navigation }) => {
+  const handleBackPress = () => {
+    navigation.goBack();
+  };
+
   return (
     <SafeAreaView edges={['right', 'left', 'bottom']}>
       <View style={styles.header}>
         <View style={styles.navbar}>
-          <MaterialIcons name="arrow-back" size={32} color="white" />
+          <TouchableOpacity onPress={handleBackPress}>
+            <MaterialIcons name="arrow-back" size={32} color="white" />
+          </TouchableOpacity>
         </View>
         <Text style={styles.headerText}>Your Plants</Text>
       </View>
-      <FlatList 
+      <FlatList
         contentContainerStyle={styles.plants}
-        columnWrapperStyle={{ paddingHorizontal: '10%', justifyContent: 'space-between' }}
+        columnWrapperStyle={{
+          paddingHorizontal: '10%',
+          justifyContent: 'space-between',
+        }}
         data={data}
         renderItem={({ item }) => <PlantCard name={item.name} />}
         keyExtractor={(item, index) => index.toString()}
-        ItemSeparatorComponent={
-            () => <View style={{ height: 25 }}/>
-        }
+        ItemSeparatorComponent={() => <View style={{ height: 25 }} />}
         numColumns={2}
       />
     </SafeAreaView>
@@ -89,9 +110,9 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   plants: {
-      marginTop: '10%',
-      paddingBottom: '50%',
-  }
+    marginTop: '10%',
+    paddingBottom: '50%',
+  },
 });
 
 export default PlantsScreen;
