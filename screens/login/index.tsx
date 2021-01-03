@@ -21,10 +21,10 @@ const generateEyeIcon = (isHidden: boolean): ReactElement => {
   return <MaterialIcons name="remove-red-eye" size={24} color="#A7A7A7" />;
 };
 
-type NavProps = StackNavigationProp<RootStackParamList, 'Login'>;
+type NavProp = StackNavigationProp<RootStackParamList, 'Login'>;
 
 type Props = {
-  navigation: NavProps;
+  navigation: NavProp;
 };
 
 const LoginScreen: React.FC<Props> = ({ navigation }) => {
