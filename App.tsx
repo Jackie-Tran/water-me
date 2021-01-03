@@ -7,6 +7,8 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { RootStackParamList } from './NavigationTypes';
 import LoginScreen from './screens/login';
 import TabsScreen from './screens/tabs';
+import PlantsScreen from './screens/plants';
+
 import {
   Merriweather_300Light,
   Merriweather_300Light_Italic,
@@ -82,6 +84,7 @@ export default function App() {
         <Stack.Navigator screenOptions={{ headerShown: false }}>
           <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen name="Tabs"  options={{ gestureEnabled: false }} component={TabsScreen} />
+          <Stack.Screen name="Your Plants" component={PlantsScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaProvider>

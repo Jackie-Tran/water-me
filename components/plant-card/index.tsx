@@ -2,12 +2,16 @@ import React from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 type Props = {
-    name: string;
-}
+  name: string;
+  marginLeft?: string | number;
+  marginRight?: string | number;
+  marginTop?: string | number;
+  marginBottom?: string | number;
+};
 
-const PlantCard: React.FC<Props> = ({ name }) => {
+const PlantCard: React.FC<Props> = ({ name, marginTop, marginBottom, marginLeft, marginRight }) => {
   return (
-    <TouchableOpacity style={styles.container}>
+    <TouchableOpacity style={[styles.container, { marginTop, marginBottom, marginLeft, marginRight }]}>
       <Image
         style={styles.image}
         source={require('../../assets/dashboard/plant.jpg')}
@@ -33,7 +37,6 @@ const styles = StyleSheet.create({
     height: 200,
     backgroundColor: 'white',
     borderRadius: 10,
-    marginRight: 25,
     justifyContent: 'center',
     alignItems: 'center',
     shadowColor: '#000',

@@ -1,7 +1,11 @@
 import React from 'react';
 import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { StackNavigationProp } from '@react-navigation/stack';
 import PlantCard from '../../components/plant-card';
+import { CompositeNavigationProp } from '@react-navigation/native';
+import { RootStackParamList, TabsParamList } from '../../NavigationTypes';
+import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 
 const data = [
     {
@@ -19,9 +23,23 @@ const data = [
     {
         name: 'Marigold'
     },
-]
+];
 
-const DashboardScreen: React.FC = () => {
+type NavProp = CompositeNavigationProp<
+    BottomTabNavigationProp<TabsParamList, 'Dashboard'>,
+    StackNavigationProp<RootStackParamList>
+>;
+
+type Props = {
+    navigation: NavProp;
+}
+
+const DashboardScreen: React.FC<Props> = ({ navigation }) => {
+
+    const handleSeeAll = () => {
+        navigation.push('Your Plants');
+    }
+
     return (
         <SafeAreaView edges={['right', 'left', 'bottom']}>
             <View style={styles.header}>
@@ -34,7 +52,7 @@ const DashboardScreen: React.FC = () => {
             <View style={styles.section}>
                 <View style={styles.sectionHeader}>
                     <Text style={styles.sectionTitle}>Your Plants</Text>
-                    <TouchableOpacity style={styles.button}>
+                    <TouchableOpacity style={styles.button} onPress={handleSeeAll}>
                         <Text style={styles.buttonText}>See All</Text>
                     </TouchableOpacity>
                 </View>
@@ -43,6 +61,12 @@ const DashboardScreen: React.FC = () => {
                     data={data}
                     renderItem={ ({ item }) => <PlantCard name={item.name}/> }
                     keyExtractor={(item, index) => index.toString()}
+                    ItemSeparatorComponent={
+                        () => <View style={{ width: 25 }}/>
+                    }
+                    ListFooterComponent={
+                        () => <View style={{ width: 25 }}/>
+                    }
                     horizontal
                 />
             </View>
@@ -53,8 +77,14 @@ const DashboardScreen: React.FC = () => {
                 <FlatList 
                     style={{ marginLeft: '5%', marginTop: '5%', paddingBottom: 25 }}
                     data={data}
-                    renderItem={ ({ item }) => <PlantCard name={item.name}/> }
+                    renderItem={ ({ item }) => <PlantCard name={item.name} /> }
                     keyExtractor={(item, index) => index.toString()}
+                    ItemSeparatorComponent={
+                        () => <View style={{ width: 25 }}/>
+                    }
+                    ListFooterComponent={
+                        () => <View style={{ width: 25 }}/>
+                    }
                     horizontal
                 />
             </View>
@@ -66,8 +96,8 @@ const styles = StyleSheet.create({
     header: {
         backgroundColor: '#40916C',
         height: 205,
-        borderBottomStartRadius: 50,
-        borderBottomEndRadius: 50,
+        borderBottomLeftRadius: 50,
+        borderBottomRightRadius: 50,
         shadowColor: '#000',
         shadowOffset: {
             width: 0,
