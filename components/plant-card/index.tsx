@@ -1,9 +1,13 @@
 import React from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-const PlantCard: React.FC = () => {
+type Props = {
+    name: string;
+}
+
+const PlantCard: React.FC<Props> = ({ name }) => {
   return (
-    <View style={styles.container}>
+    <TouchableOpacity style={styles.container}>
       <Image
         style={styles.image}
         source={require('../../assets/dashboard/plant.jpg')}
@@ -19,7 +23,7 @@ const PlantCard: React.FC = () => {
       >
         <Text style={styles.text}>Cassia</Text>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 
@@ -29,6 +33,7 @@ const styles = StyleSheet.create({
     height: 200,
     backgroundColor: 'white',
     borderRadius: 10,
+    marginRight: 25,
     justifyContent: 'center',
     alignItems: 'center',
     shadowColor: '#000',
@@ -43,8 +48,8 @@ const styles = StyleSheet.create({
   image: {
     width: '100%',
     flex: 4,
-    borderTopStartRadius: 10,
-    borderTopEndRadius: 10,
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
   },
   text: {
     fontFamily: 'WorkSans_400Regular',

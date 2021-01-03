@@ -1,7 +1,25 @@
 import React from 'react';
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import PlantCard from '../../components/plant-card';
+
+const data = [
+    {
+        name: 'Cassia'
+    },
+    {
+        name: 'Adonis'
+    },
+    {
+        name: 'Zinnia'
+    },
+    {
+        name: 'Poppy'
+    },
+    {
+        name: 'Marigold'
+    },
+]
 
 const DashboardScreen: React.FC = () => {
     return (
@@ -20,7 +38,13 @@ const DashboardScreen: React.FC = () => {
                         <Text style={styles.buttonText}>See All</Text>
                     </TouchableOpacity>
                 </View>
-                <PlantCard />
+                <FlatList 
+                    style={{ marginLeft: '5%', marginTop: '5%', paddingBottom: 25 }}
+                    data={data}
+                    renderItem={ ({ item }) => <PlantCard name={item.name}/> }
+                    keyExtractor={(item, index) => index.toString()}
+                    horizontal
+                />
             </View>
         </SafeAreaView>
     )
