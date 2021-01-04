@@ -29,6 +29,10 @@ const AddPlantScreen: React.FC<Props> = ({ navigation }) => {
     navigation.goBack();
   };
 
+  const handleSavePress = () => {
+      navigation.goBack();
+  }
+
   return (
     <SafeAreaView
       style={{ alignItems: 'center', flex: 1 }}
@@ -49,11 +53,11 @@ const AddPlantScreen: React.FC<Props> = ({ navigation }) => {
             <Text style={styles.text}>Time</Text>
             <DateTimePicker style={styles.timePicker} value={new Date()} mode='time' display='default' />
           </View>
-          <PropertyButton label="Repeat" value="Every Monday" />
+          <PropertyButton label="Repeat" value="Every Monday" route='Repeat' />
           <PropertyButton label="Name" value="Cassia" />
           <PropertyButton label="Type" value="Sunflower" />
         </View>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={handleSavePress}>
           <Text style={styles.buttonText}>Save</Text>
         </TouchableOpacity>
       </View>
