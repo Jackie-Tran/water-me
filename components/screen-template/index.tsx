@@ -48,6 +48,7 @@ const ScreenTemplate: React.FC<Props> = ({ title, showBack, showEdit, children }
         </View>
         <Text style={styles.headerText}>{ title }</Text>
       </View>
+      { children }
     </SafeAreaView>
   );
 };

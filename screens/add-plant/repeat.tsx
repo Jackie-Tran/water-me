@@ -5,6 +5,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../NavigationTypes';
 import ScreenTemplate from '../../components/screen-template';
+import RepeatToggle from '../../components/repeat-toggle';
 
 type NavProp = StackNavigationProp<RootStackParamList, 'Your Plants'>;
 
@@ -19,35 +20,20 @@ const RepeatScreen: React.FC<Props> = ({ navigation }) => {
 
   return (
     <ScreenTemplate title='Repeat' showBack >
-
+        <View style={{ marginTop: '5%' }}>
+            <RepeatToggle label='Every Monday' />
+            <RepeatToggle label='Every Tuesday' />
+            <RepeatToggle label='Every Wednesday' />
+            <RepeatToggle label='Every Thursday' />
+            <RepeatToggle label='Every Friday' />
+            <RepeatToggle label='Every Saturday' />
+            <RepeatToggle label='Every Sunday' />
+        </View>
     </ScreenTemplate>
   );
 };
 
 const styles = StyleSheet.create({
-  header: {
-    backgroundColor: '#40916C',
-    height: 150,
-    borderBottomLeftRadius: 50,
-    borderBottomRightRadius: 50,
-    paddingVertical: '10%',
-    paddingHorizontal: '3%',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 5,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 5,
-    elevation: 5,
-  },
-  navbar: {},
-  headerText: {
-    fontFamily: 'Merriweather_400Regular',
-    color: 'white',
-    fontSize: 42,
-    textAlign: 'center',
-  },
 });
 
 export default RepeatScreen;
