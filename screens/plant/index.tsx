@@ -4,6 +4,7 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { RootStackParamList } from '../../NavigationTypes';
 import { MaterialIcons } from '@expo/vector-icons';
+import ScreenTemplate from '../../components/screen-template';
 
 type NavProp = StackNavigationProp<RootStackParamList, 'Your Plants'>;
 
@@ -16,29 +17,18 @@ const PlantScreen: React.FC<Props> = ({ navigation }) => {
   };
 
   return (
-    <SafeAreaView edges={['right', 'left', 'bottom']}>
-      <View style={styles.header}>
-        <View style={styles.navbar}>
-          <TouchableOpacity onPress={handleBackPress}>
-            <MaterialIcons name="arrow-back" size={32} color="white" />
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <MaterialIcons name="mode-edit" size={32} color="white" />
-          </TouchableOpacity>
+    <ScreenTemplate title='Your Plants' showBack showEdit>
+    <View style={styles.content}>
+        <View style={styles.imageContainer}>
+            <Image style={styles.image} source={require('../../assets/dashboard/plant.jpg')}/>
+            <Text style={[styles.text, { fontSize: 36 }]}>Sunflower</Text>
         </View>
-        <Text style={styles.headerText}>Cassia</Text>
-      </View>
-      <View style={styles.content}>
-          <View style={styles.imageContainer}>
-              <Image style={styles.image} source={require('../../assets/dashboard/plant.jpg')}/>
-              <Text style={[styles.text, { fontSize: 36 }]}>Sunflower</Text>
-          </View>
-          <View style={styles.details}>
-            <Text style={[styles.text, { fontSize: 24 }]}>Water Time: 5:00pm</Text>
-            <Text style={[styles.text, { fontSize: 24 }]}>Every Monday</Text>
-          </View>
-      </View>
-    </SafeAreaView>
+        <View style={styles.details}>
+          <Text style={[styles.text, { fontSize: 24 }]}>Water Time: 5:00pm</Text>
+          <Text style={[styles.text, { fontSize: 24 }]}>Every Monday</Text>
+        </View>
+    </View>
+    </ScreenTemplate>
   );
 };
 

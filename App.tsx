@@ -46,6 +46,7 @@ import AddPlantScreen from './screens/add-plant';
 import RepeatScreen from './screens/add-plant/repeat';
 import NameScreen from './screens/add-plant/name';
 import TypeScreen from './screens/add-plant/type';
+import EditPlantScreen from './screens/edit-plant';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -95,6 +96,7 @@ export default function App() {
           <Stack.Screen name="Type" component={TypeScreen} />
           <Stack.Screen name="Your Plants" component={PlantsScreen} />
           <Stack.Screen name="Plant" component={PlantScreen} />
+          <Stack.Screen name="Edit Plant" component={EditPlantScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaProvider>

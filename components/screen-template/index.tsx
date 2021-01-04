@@ -18,8 +18,8 @@ type NavProp = CompositeNavigationProp<
 
 type Props = {
   title: string;
-  showBack?: true;
-  showEdit?: false;
+  showBack?: boolean;
+  showEdit?: boolean;
 };
 
 const ScreenTemplate: React.FC<Props> = ({
@@ -33,6 +33,10 @@ const ScreenTemplate: React.FC<Props> = ({
     navigation.goBack();
   };
 
+  const handleEditPress = () => {
+      navigation.push('Edit Plant');
+  }
+
   return (
     <DismissKeyboard>
       <SafeAreaView style={{ flex: 1 }} edges={['right', 'left', 'bottom']}>
@@ -44,7 +48,7 @@ const ScreenTemplate: React.FC<Props> = ({
               </TouchableOpacity>
             )}
             {showEdit && (
-              <TouchableOpacity>
+              <TouchableOpacity onPress={handleEditPress}>
                 <MaterialIcons name="mode-edit" size={32} color="white" />
               </TouchableOpacity>
             )}
