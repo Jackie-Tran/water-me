@@ -42,7 +42,7 @@ import {
     WorkSans_900Black_Italic 
   } from '@expo-google-fonts/work-sans'
   import AppLoading from 'expo-app-loading';
-import AddPlantScreen from './screens/tabs/add-plant';
+import AddPlantScreen from './screens/add-plant';
 
 const Stack = createStackNavigator<RootStackParamList>();
 

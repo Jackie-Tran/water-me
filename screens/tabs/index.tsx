@@ -3,7 +3,6 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import DashboardScreen from './dashboard';
 import CalendarScreen from './calendar';
 import { TabsParamList } from '../../NavigationTypes';
-import AddPlantScreen from './add-plant';
 import { MaterialIcons } from '@expo/vector-icons';
 import NewPlantButton from '../../components/new-plant-button';
 
