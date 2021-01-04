@@ -5,7 +5,7 @@ const CalendarScreen: React.FC = () => {
     return (
         <View>
             <Text>
-                Dashboard
+                Calendar
             </Text>
         </View>
     )

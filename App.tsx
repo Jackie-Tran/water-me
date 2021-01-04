@@ -42,6 +42,7 @@ import {
     WorkSans_900Black_Italic 
   } from '@expo-google-fonts/work-sans'
   import AppLoading from 'expo-app-loading';
+import AddPlantScreen from './screens/tabs/add-plant';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -85,6 +86,7 @@ export default function App() {
         <Stack.Navigator screenOptions={{ headerShown: false }}>
           <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen name="Tabs"  options={{ gestureEnabled: false }} component={TabsScreen} />
+          <Stack.Screen name="Add Plant" component={AddPlantScreen} />
           <Stack.Screen name="Your Plants" component={PlantsScreen} />
           <Stack.Screen name="Plant" component={PlantScreen} />
         </Stack.Navigator>
