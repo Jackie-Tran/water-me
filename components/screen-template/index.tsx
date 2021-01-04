@@ -9,6 +9,7 @@ import {
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { RootStackParamList, TabsParamList } from '../../NavigationTypes';
 import { StackNavigationProp } from '@react-navigation/stack';
+import DismissKeyboard from '../dismiss-keyboard';
 
 type NavProp = CompositeNavigationProp<
   BottomTabNavigationProp<TabsParamList>,
@@ -16,40 +17,43 @@ type NavProp = CompositeNavigationProp<
 >;
 
 type Props = {
-    title: string,
-    showBack?: true,
-    showEdit?: false,
-}
+  title: string;
+  showBack?: true;
+  showEdit?: false;
+};
 
-const ScreenTemplate: React.FC<Props> = ({ title, showBack, showEdit, children }) => {
+const ScreenTemplate: React.FC<Props> = ({
+  title,
+  showBack,
+  showEdit,
+  children,
+}) => {
   const navigation = useNavigation<NavProp>();
   const handleBackPress = () => {
     navigation.goBack();
   };
 
   return (
-    <SafeAreaView edges={['right', 'left', 'bottom']}>
-      <View style={styles.header}>
-        <View style={styles.navbar}>
-            {
-                showBack && (
-                    <TouchableOpacity onPress={handleBackPress}>
-                      <MaterialIcons name="arrow-back" size={32} color="white" />
-                    </TouchableOpacity>
-                )
-            }
-            {
-                showEdit && (
-                    <TouchableOpacity>
-                      <MaterialIcons name="mode-edit" size={32} color="white" />
-                    </TouchableOpacity>
-                )
-            }
+    <DismissKeyboard>
+      <SafeAreaView style={{ flex: 1 }} edges={['right', 'left', 'bottom']}>
+        <View style={styles.header}>
+          <View style={styles.navbar}>
+            {showBack && (
+              <TouchableOpacity onPress={handleBackPress}>
+                <MaterialIcons name="arrow-back" size={32} color="white" />
+              </TouchableOpacity>
+            )}
+            {showEdit && (
+              <TouchableOpacity>
+                <MaterialIcons name="mode-edit" size={32} color="white" />
+              </TouchableOpacity>
+            )}
+          </View>
+          <Text style={styles.headerText}>{title}</Text>
         </View>
-        <Text style={styles.headerText}>{ title }</Text>
-      </View>
-      { children }
-    </SafeAreaView>
+        {children}
+      </SafeAreaView>
+    </DismissKeyboard>
   );
 };
 
@@ -69,6 +73,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 5,
     elevation: 5,
+    marginBottom: '5%',
   },
   navbar: {
     flexDirection: 'row',

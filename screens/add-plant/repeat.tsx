@@ -7,16 +7,13 @@ import { RootStackParamList } from '../../NavigationTypes';
 import ScreenTemplate from '../../components/screen-template';
 import RepeatToggle from '../../components/repeat-toggle';
 
-type NavProp = StackNavigationProp<RootStackParamList, 'Your Plants'>;
+type NavProp = StackNavigationProp<RootStackParamList, 'Repeat'>;
 
 type Props = {
   navigation: NavProp;
 };
 
 const RepeatScreen: React.FC<Props> = ({ navigation }) => {
-  const handleBackPress = () => {
-    navigation.goBack();
-  };
 
   return (
     <ScreenTemplate title='Repeat' showBack >

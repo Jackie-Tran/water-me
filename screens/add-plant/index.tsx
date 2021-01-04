@@ -54,8 +54,8 @@ const AddPlantScreen: React.FC<Props> = ({ navigation }) => {
             <DateTimePicker style={styles.timePicker} value={new Date()} mode='time' display='default' />
           </View>
           <PropertyButton label="Repeat" value="Every Monday" route='Repeat' />
-          <PropertyButton label="Name" value="Cassia" />
-          <PropertyButton label="Type" value="Sunflower" />
+          <PropertyButton label="Name" value="Cassia" route='Name' />
+          <PropertyButton label="Type" value="Sunflower" route='Type' />
         </View>
         <TouchableOpacity style={styles.button} onPress={handleSavePress}>
           <Text style={styles.buttonText}>Save</Text>
