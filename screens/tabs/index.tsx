@@ -13,9 +13,9 @@ const Tabs: React.FC = () => {
     return (
         <>
             <NewPlantButton />
-            <Tab.Navigator tabBarOptions={{ showLabel: false }}>
-                <Tab.Screen name='Dashboard' options={{ tabBarIcon: () => <MaterialIcons name="dashboard" size={24} color="#C4C4C4" /> }} component={DashboardScreen}/>      
-                <Tab.Screen name='Calendar' options={{ tabBarIcon: () => <MaterialIcons name="calendar-today" size={24} color="#C4C4C4" /> }} component={CalendarScreen}/>      
+            <Tab.Navigator tabBarOptions={{ showLabel: false, activeTintColor: '#52B788', inactiveTintColor: '#C4C4C4' }}>
+                <Tab.Screen name='Dashboard' options={{ tabBarIcon: ({ color }) => <MaterialIcons name="dashboard" size={24} color={color}/> }} component={DashboardScreen}/>      
+                <Tab.Screen name='Calendar' options={{ tabBarIcon: ({ color }) => <MaterialIcons name="calendar-today" size={24} color={color} /> }} component={CalendarScreen}/>      
             </Tab.Navigator>
         </>
     );
