@@ -26,4 +26,11 @@ router.post('/', async (req: Request, res: Response, next: NextFunction) => {
   });
 });
 
+// Get all a user's plants
+router.get('/:uid', async (req: Request, res: Response, next: NextFunction) => {
+    const { uid } = req.params;
+    const { rows } = await db.query('SELECT * FROM public.plants WHERE uid=$1', [uid]);
+    res.json(rows);
+});
+
 module.exports = router;
