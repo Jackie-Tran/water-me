@@ -11,8 +11,6 @@ type User = {
   email: string;
 };
 
-router.get('/', async (req: Request, res: Response, next: NextFunction) => {});
-
 // Create user
 router.post('/', async (req: Request, res: Response, next: NextFunction) => {
   const { uid, firstName, lastName, email } = req.body;
@@ -60,7 +58,7 @@ router.put('/:uid', async (req: Request, res: Response, next: NextFunction) => {
   }
   query = query.substr(0, query.lastIndexOf(','));
   query += " WHERE uid='" + uid + "'";
-  
+
   const { rowCount } = await db.query(query, []);
   res.json({ message: 'Updated ' + rowCount + ' user(s)' });
 });
