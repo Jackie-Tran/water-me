@@ -17,7 +17,7 @@ const PlantScreen: React.FC<Props> = ({ navigation }) => {
   };
 
   return (
-    <ScreenTemplate title='Your Plants' showBack showEdit>
+    <ScreenTemplate title='Cassia' showBack showEdit>
     <View style={styles.content}>
         <View style={styles.imageContainer}>
             <Image style={styles.image} source={require('../../assets/dashboard/plant.jpg')}/>
