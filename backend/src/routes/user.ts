@@ -41,4 +41,27 @@ router.get('/:uid', async (req: Request, res: Response, next: NextFunction) => {
   res.json({ message: 'Unable find user with that uid' });
 });
 
+// Update user
+router.put('/:uid', async (req: Request, res: Response, next: NextFunction) => {
+    const { uid } = req.params;
+    const { firstName, lastName, email } = req.body;
+    let query = 'UPDATE public.users SET ';
+    // Build query
+    if (firstName) {
+        query += "first_name='" + firstName + "', ";
+    }
+    if (lastName) {
+        query += "last_name='" + lastName + "', ";
+    }
+    if (email) {
+        query += "email='" + email + "',";
+    }
+    query = query.substr(0, query.lastIndexOf(','));
+    query += " WHERE uid='" + uid + "'";
+    console.log(query);
+    const { rowCount } = await db.query(query, []);
+
+    res.json({ message: 'Updated ' + rowCount + ' user(s)' });
+});
+
 module.exports = router;
