@@ -1,15 +1,21 @@
 import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialIcons } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import {
   CompositeNavigationProp,
   useNavigation,
 } from '@react-navigation/native';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
-import { RootStackParamList, TabsParamList } from '../../constants/NavigationTypes';
+import {
+  RootStackParamList,
+  TabsParamList,
+} from '../../constants/NavigationTypes';
 import { StackNavigationProp } from '@react-navigation/stack';
 import DismissKeyboard from '../dismiss-keyboard';
+import { PlantContext } from '../../context/plant-context';
+import axios from 'axios';
 
 type NavProp = CompositeNavigationProp<
   BottomTabNavigationProp<TabsParamList>,
@@ -21,6 +27,8 @@ type Props = {
   showBack?: boolean;
   onBackPress?: () => void;
   showEdit?: boolean;
+  showDelete?: boolean;
+  onDeletePress?: () => void;
 };
 
 const ScreenTemplate: React.FC<Props> = ({
@@ -28,6 +36,8 @@ const ScreenTemplate: React.FC<Props> = ({
   showBack,
   onBackPress,
   showEdit,
+  showDelete,
+  onDeletePress,
   children,
 }) => {
   const navigation = useNavigation<NavProp>();
@@ -37,8 +47,12 @@ const ScreenTemplate: React.FC<Props> = ({
   };
 
   const handleEditPress = () => {
-      navigation.push('Edit Plant');
-  }
+    navigation.push('Edit Plant');
+  };
+
+  const handleDeletePress = () => {
+    if (onDeletePress) onDeletePress();
+  };
 
   return (
     <DismissKeyboard>
@@ -53,6 +67,15 @@ const ScreenTemplate: React.FC<Props> = ({
             {showEdit && (
               <TouchableOpacity onPress={handleEditPress}>
                 <MaterialIcons name="mode-edit" size={32} color="white" />
+              </TouchableOpacity>
+            )}
+            {showDelete && (
+              <TouchableOpacity onPress={handleDeletePress}>
+                <MaterialCommunityIcons
+                  name="trash-can-outline"
+                  size={32}
+                  color="white"
+                />
               </TouchableOpacity>
             )}
           </View>
