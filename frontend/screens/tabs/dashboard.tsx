@@ -9,6 +9,7 @@ import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { UserContext } from '../../context/user-context';
 import axios from 'axios';
 import * as API from '../../constants/endpoints';
+import { Plant } from '../../context/plant-context';
 
 const data = [
     {
@@ -27,15 +28,6 @@ const data = [
         name: 'Marigold'
     },
 ];
-
-type Plant = {
-    id: number;
-    name: string;
-    type: string;
-    waterTime: string;
-    repeat: string[];
-    uid: string;
-}
 
 type NavProp = CompositeNavigationProp<
     BottomTabNavigationProp<TabsParamList, 'Dashboard'>,

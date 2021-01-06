@@ -14,15 +14,7 @@ import { RootStackParamList } from '../../constants/NavigationTypes';
 import { UserContext } from '../../context/user-context';
 import axios from 'axios';
 import * as API from '../../constants/endpoints';
-
-type Plant = {
-  id: number;
-  name: string;
-  type: string;
-  waterTime: string;
-  repeat: string[];
-  uid: string;
-};
+import { Plant } from '../../context/plant-context';
 
 type NavProp = StackNavigationProp<RootStackParamList, 'Your Plants'>;
 
