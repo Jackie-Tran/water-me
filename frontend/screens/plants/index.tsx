@@ -58,7 +58,7 @@ const PlantsScreen: React.FC<Props> = ({ navigation }) => {
           justifyContent: 'space-between',
         }}
         data={plants}
-        renderItem={({ item }) => <PlantCard name={item.name} />}
+        renderItem={({ item }) => <PlantCard id={item.id} name={item.name} type={item.type} waterTime={item['waterTime']} repeat={item.repeat} uid={item.uid}/> }
         keyExtractor={(item, index) => index.toString()}
         ItemSeparatorComponent={() => <View style={{ height: 25 }} />}
         numColumns={2}

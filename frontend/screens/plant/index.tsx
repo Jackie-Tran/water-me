@@ -5,6 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { RootStackParamList } from '../../constants/NavigationTypes';
 import { MaterialIcons } from '@expo/vector-icons';
 import ScreenTemplate from '../../components/screen-template';
+import { PlantContext } from '../../context/plant-context';
 
 type NavProp = StackNavigationProp<RootStackParamList, 'Your Plants'>;
 
@@ -12,22 +13,25 @@ type Props = {
   navigation: NavProp;
 };
 const PlantScreen: React.FC<Props> = ({ navigation }) => {
-  const handleBackPress = () => {
-    navigation.goBack();
-  };
+  const { plant } = React.useContext(PlantContext);
 
   return (
-    <ScreenTemplate title='Cassia' showBack showEdit>
-    <View style={styles.content}>
+    <ScreenTemplate title={ plant.name } showBack showEdit>
+      <View style={styles.content}>
         <View style={styles.imageContainer}>
-            <Image style={styles.image} source={require('../../assets/dashboard/plant.jpg')}/>
-            <Text style={[styles.text, { fontSize: 36 }]}>Sunflower</Text>
+          <Image
+            style={styles.image}
+            source={require('../../assets/dashboard/plant.jpg')}
+          />
+          <Text style={[styles.text, { fontSize: 36 }]}>{ plant.type }</Text>
         </View>
         <View style={styles.details}>
-          <Text style={[styles.text, { fontSize: 24 }]}>Water Time: 5:00pm</Text>
-          <Text style={[styles.text, { fontSize: 24 }]}>Every Monday</Text>
+          <Text style={[styles.text, { fontSize: 24 }]}>
+            Water Time: { plant.waterTime }
+          </Text>
+          <Text style={[styles.text, { fontSize: 24 }]}>{ plant.repeat }</Text>
         </View>
-    </View>
+      </View>
     </ScreenTemplate>
   );
 };
@@ -50,8 +54,8 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   navbar: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   headerText: {
     fontFamily: 'Merriweather_400Regular',
@@ -60,7 +64,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   content: {
-      paddingTop: '10%',
+    paddingTop: '10%',
   },
   imageContainer: {
     justifyContent: 'center',
@@ -71,14 +75,14 @@ const styles = StyleSheet.create({
     marginBottom: '5%',
   },
   image: {
-      width: 300,
-      height: 300,
-      borderRadius: 15,
-      marginBottom: '3%',
+    width: 300,
+    height: 300,
+    borderRadius: 15,
+    marginBottom: '3%',
   },
   details: {
     paddingHorizontal: '10%',
-  }
+  },
 });
 
 export default PlantScreen;

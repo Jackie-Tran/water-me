@@ -26,10 +26,21 @@ router.post('/', async (req: Request, res: Response, next: NextFunction) => {
 // Get all a user's plants
 router.get('/:uid', async (req: Request, res: Response, next: NextFunction) => {
   const { uid } = req.params;
-  const { rows } = await db.query('SELECT * FROM public.plants WHERE uid=$1', [
-    uid,
-  ]);
-  res.json(rows);
+  try {
+    let { rows } = await db.query('SELECT * FROM public.plants WHERE uid=$1', [
+      uid,
+    ]);
+    
+    // Fix output
+    rows.forEach((e: { [x: string]: any; waterTime: any; }) => {
+        e.waterTime = e['water_time'];
+        delete e['water_time'];
+    })
+    res.json(rows);
+  } catch (err) {
+      res.status(404);
+      res.json(err);
+  }
 });
 
 // Update plant
