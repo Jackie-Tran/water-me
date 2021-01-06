@@ -36,6 +36,11 @@ router.post('/signIn', async (req: Request, res: Response, next: NextFunction) =
     }
 });
 
+// Sign out user
+router.post('/signOut', async (req: Request, res: Response, next: NextFunction) => {
+    
+});
+
 // Read user
 router.get('/:uid', async (req: Request, res: Response, next: NextFunction) => {
   const { uid } = req.params;

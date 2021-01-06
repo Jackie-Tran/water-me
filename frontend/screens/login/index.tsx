@@ -6,6 +6,9 @@ import {
   TouchableOpacity,
   View,
   TextInput,
+  NativeSyntheticEvent,
+  TextInputChangeEventData,
+  Alert,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -13,6 +16,9 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import DismissKeyboard from '../../components/dismiss-keyboard';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../NavigationTypes';
+import firebase from '../../firebase';
+import axios from 'axios';
+import * as API from '../../endpoints';
 
 const generateEyeIcon = (isHidden: boolean): ReactElement => {
   if (isHidden) {
@@ -29,9 +35,23 @@ type Props = {
 
 const LoginScreen: React.FC<Props> = ({ navigation }) => {
   const [isHidden, setHidden] = React.useState<boolean>(true);
+  const [email, setEmail] = React.useState<string>('');
+  const [password, setPassword] = React.useState<string>('');
 
-  const handleLoginPress = () => {
-    navigation.push('Tabs');
+  const handleLoginPress = async () => {
+      if (!email || !password) {
+          return Alert.alert('Log In Error', 'Missing email and/or password');
+      }
+      try {
+        // @ts-ignore
+        const { user: { uid } } = await firebase.auth().signInWithEmailAndPassword(email, password);
+        console.log(API.GET_USER(uid));
+        const { data: user } = await axios.get(API.GET_USER(uid));
+        console.log(user);
+      } catch (err) {
+        Alert.alert('Error', err);
+      }
+    // navigation.push('Tabs');
   };
 
   return (
@@ -50,6 +70,7 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
                   style={styles.input}
                   textContentType="emailAddress"
                   placeholder="email"
+                  onChange={(e) => setEmail(e.nativeEvent.text)}
                 />
               </View>
               <View style={styles.textInput}>
@@ -59,6 +80,7 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
                   textContentType="password"
                   secureTextEntry={isHidden}
                   placeholder="password"
+                  onChange={(e) => setPassword(e.nativeEvent.text)}
                 />
                 <TouchableOpacity
                   style={{ marginRight: '3%' }}
