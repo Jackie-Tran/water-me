@@ -12,8 +12,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import DismissKeyboard from '../../components/dismiss-keyboard';
 import { MaterialIcons } from '@expo/vector-icons';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '../../NavigationTypes';
-import * as API from '../../endpoints';
+import { RootStackParamList } from '../../constants/NavigationTypes';
+import * as API from '../../constants/endpoints';
 import axios from 'axios';
 
 type NavProp = StackNavigationProp<RootStackParamList, 'Sign Up'>;
@@ -31,6 +31,10 @@ const SignUpScreen: React.FC<Props> = ({ navigation }) => {
     const [confirm, setConfirm] = React.useState<string>('');
 
     const handleSignUpPress = () => {
+        // Check if there are any empty fields
+        if (!firstName || !lastName || !email || !password) {
+            return Alert.alert('Sign Up Error', 'Please check that you have filled all required fields.')
+        }
         axios.post(API.CREATE_USER, { firstName, lastName, email, password })
         .then(res => {
             Alert.alert('Account Created!', 'You can now sign into your new accout.');

@@ -1,11 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StackNavigationProp } from '@react-navigation/stack';
 import PlantCard from '../../components/plant-card';
 import { CompositeNavigationProp } from '@react-navigation/native';
-import { RootStackParamList, TabsParamList } from '../../NavigationTypes';
+import { RootStackParamList, TabsParamList } from '../../constants/NavigationTypes';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
+import { UserContext } from '../../context/user-context';
+import axios from 'axios';
+import * as API from '../../constants/endpoints';
 
 const data = [
     {
@@ -25,6 +28,15 @@ const data = [
     },
 ];
 
+type Plant = {
+    id: number;
+    name: string;
+    type: string;
+    waterTime: string;
+    repeat: string[];
+    uid: string;
+}
+
 type NavProp = CompositeNavigationProp<
     BottomTabNavigationProp<TabsParamList, 'Dashboard'>,
     StackNavigationProp<RootStackParamList>
@@ -36,6 +48,21 @@ type Props = {
 
 const DashboardScreen: React.FC<Props> = ({ navigation }) => {
 
+    const { user, setUser } = React.useContext(UserContext);
+    const [plants, setPlants] = React.useState<Plant[]>([]);
+
+    // Fetch user's plants and water soon
+    useEffect(() => {
+        // TODO: Fetch water soon plants
+        axios.get(API.GET_PLANTS(user.uid))
+        .then(res => {
+            setPlants(res.data);
+        })
+        .catch(err => {
+            console.log(err);
+        });
+    }, [])
+
     const handleSeeAll = () => {
         navigation.push('Your Plants');
     }
@@ -45,7 +72,7 @@ const DashboardScreen: React.FC<Props> = ({ navigation }) => {
             <View style={styles.header}>
                 <View>
                     <Text style={styles.headerText} >Welcome,</Text>
-                    <Text style={styles.headerText} >Jackie</Text>
+                    <Text style={styles.headerText} >{ user.firstName }</Text>
                 </View>
                 <Image style={styles.avatar} source={require('../../assets/dashboard/temp-avatar.png')}/>
             </View>
@@ -58,7 +85,7 @@ const DashboardScreen: React.FC<Props> = ({ navigation }) => {
                 </View>
                 <FlatList 
                     style={{ marginLeft: '5%', marginTop: '5%', paddingBottom: 25 }}
-                    data={data}
+                    data={plants}
                     renderItem={ ({ item }) => <PlantCard name={item.name}/> }
                     keyExtractor={(item, index) => index.toString()}
                     ItemSeparatorComponent={
@@ -74,7 +101,7 @@ const DashboardScreen: React.FC<Props> = ({ navigation }) => {
                 <View style={styles.sectionHeader}>
                     <Text style={styles.sectionTitle}>Water Soon</Text>
                 </View>
-                <FlatList 
+                {/* <FlatList 
                     style={{ marginLeft: '5%', marginTop: '5%', paddingBottom: 25 }}
                     data={data}
                     renderItem={ ({ item }) => <PlantCard name={item.name} /> }
@@ -86,7 +113,7 @@ const DashboardScreen: React.FC<Props> = ({ navigation }) => {
                         () => <View style={{ width: 25 }}/>
                     }
                     horizontal
-                />
+                /> */}
             </View>
         </SafeAreaView>
     )

@@ -10,7 +10,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialIcons } from '@expo/vector-icons';
 import PlantCard from '../../components/plant-card';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '../../NavigationTypes';
+import { RootStackParamList } from '../../constants/NavigationTypes';
 
 const data = [
   {

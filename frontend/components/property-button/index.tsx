@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import { RootStackParamList } from '../../NavigationTypes';
+import { RootStackParamList } from '../../constants/NavigationTypes';
 import { StackNavigationProp } from '@react-navigation/stack';
 
 type NavProp = StackNavigationProp<RootStackParamList>;

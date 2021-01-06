@@ -7,7 +7,7 @@ import {
   useNavigation,
 } from '@react-navigation/native';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
-import { RootStackParamList, TabsParamList } from '../../NavigationTypes';
+import { RootStackParamList, TabsParamList } from '../../constants/NavigationTypes';
 import { StackNavigationProp } from '@react-navigation/stack';
 import DismissKeyboard from '../dismiss-keyboard';
 
