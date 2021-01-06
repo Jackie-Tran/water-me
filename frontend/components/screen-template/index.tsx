@@ -19,17 +19,20 @@ type NavProp = CompositeNavigationProp<
 type Props = {
   title: string;
   showBack?: boolean;
+  onBackPress?: () => void;
   showEdit?: boolean;
 };
 
 const ScreenTemplate: React.FC<Props> = ({
   title,
   showBack,
+  onBackPress,
   showEdit,
   children,
 }) => {
   const navigation = useNavigation<NavProp>();
   const handleBackPress = () => {
+    if (onBackPress) onBackPress();
     navigation.goBack();
   };
 

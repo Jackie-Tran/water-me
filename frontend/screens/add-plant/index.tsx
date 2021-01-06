@@ -9,6 +9,8 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../constants/NavigationTypes';
 import PropertyButton from '../../components/property-button';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import PlantCard from '../../components/plant-card';
+import { PlantContext } from '../../context/plant-context';
 
 type NavProp = StackNavigationProp<RootStackParamList, 'Add Plant'>;
 
@@ -25,6 +27,9 @@ const generateImage = () => {
 };
 
 const AddPlantScreen: React.FC<Props> = ({ navigation }) => {
+
+    const { plant } = React.useContext(PlantContext);
+
   const handleBackPress = () => {
     navigation.goBack();
   };
@@ -50,12 +55,12 @@ const AddPlantScreen: React.FC<Props> = ({ navigation }) => {
         <View>{generateImage()}</View>
         <View>
           <View style={styles.timeContainer}>
-            <Text style={styles.text}>Time</Text>
-            <DateTimePicker style={styles.timePicker} value={new Date()} mode='time' display='default' />
+            <Text style={styles.text}>Water Time</Text>
+            <DateTimePicker style={styles.timePicker} value={new Date()} mode='time' display='default' onChange={(e, date) => {if (date) setWaterTime(date)}} />
           </View>
-          <PropertyButton label="Repeat" value="Every Monday" route='Repeat' />
-          <PropertyButton label="Name" value="Cassia" route='Name' />
-          <PropertyButton label="Type" value="Sunflower" route='Type' />
+          <PropertyButton label="Repeat" value={plant.repeat.toString()} route='Repeat' />
+          <PropertyButton label="Name" value={plant.name} route='Name' />
+          <PropertyButton label="Type" value={plant.type} route='Type' />
         </View>
         <TouchableOpacity style={styles.button} onPress={handleSavePress}>
           <Text style={styles.buttonText}>Save</Text>

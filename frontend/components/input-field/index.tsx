@@ -11,10 +11,11 @@ import { MaterialIcons } from '@expo/vector-icons';
 
 type Props = {
   label: string;
+  value: string;
+  setValue: React.Dispatch<React.SetStateAction<string>>;
 };
 
-const InputField: React.FC<Props> = ({ label }) => {
-  const [value, setValue] = React.useState<string>('');
+const InputField: React.FC<Props> = ({ label, value, setValue }) => {
 
   const handleChange = (e: NativeSyntheticEvent<TextInputChangeEventData>) => {
     setValue(e.nativeEvent.text);

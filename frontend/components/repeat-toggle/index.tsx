@@ -2,21 +2,32 @@ import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 
-type Props = {
-    label: string;
+type RepeatType = {
+    monday: boolean;
+    tuesday: boolean;
+    wednesday: boolean;
+    thursday: boolean;
+    friday: boolean;
+    saturday: boolean;
+    sunday: boolean;
 }
 
-const RepeatToggle: React.FC<Props> = ({ label }) => {
-  const [isActive, setActive] = React.useState<boolean>(false);
+type Props = {
+    label: 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday' | 'sunday';
+    repeat: RepeatType;
+    setRepeat: React.Dispatch<React.SetStateAction<RepeatType>>;
+}
+
+const RepeatToggle: React.FC<Props> = ({ label, repeat, setRepeat }) => {
 
   const handlePress = () => {
-    setActive(!isActive);
+      setRepeat({ ...repeat, [label]: !repeat[label] });
   };
 
   return (
     <TouchableOpacity style={styles.container} onPress={handlePress}>
-      <Text style={styles.text}>{ label }</Text>
-      {isActive && <MaterialIcons name="check" size={24} color="#52B788" />}
+      <Text style={styles.text}>Every { label[0].toUpperCase() + label.substr(1) }</Text>
+      {repeat[label] && <MaterialIcons name="check" size={24} color="#52B788" />}
     </TouchableOpacity>
   );
 };
