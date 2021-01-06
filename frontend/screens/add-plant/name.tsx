@@ -5,8 +5,8 @@ import ScreenTemplate from '../../components/screen-template';
 import { PlantContext } from '../../context/plant-context';
 
 const NameScreen: React.FC = () => {
-  const [name, setName] = React.useState<string>('');  
   const { plant, setPlant } = React.useContext(PlantContext);
+  const [name, setName] = React.useState<string>(plant.name);  
   const onBackPress = () => {
     // Update the name field in the plant context
     setPlant({ ...plant, name });

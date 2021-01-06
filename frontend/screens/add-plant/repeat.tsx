@@ -33,17 +33,16 @@ const repeatToArray = (repeat: RepeatType): string[] => {
 }
 
 const RepeatScreen: React.FC<Props> = ({ navigation }) => {
-
+    const { plant, setPlant } = React.useContext(PlantContext);
   const [repeat, setRepeat] = React.useState<RepeatType>({
-    monday: false,
-    tuesday: false,
-    wednesday: false,
-    thursday: false,
-    friday: false,
-    saturday: false,
-    sunday: false,
+    monday: plant.repeat.includes('monday'),
+    tuesday: plant.repeat.includes('tuesday'),
+    wednesday: plant.repeat.includes('wednesday'),
+    thursday: plant.repeat.includes('thursday'),
+    friday: plant.repeat.includes('friday'),
+    saturday: plant.repeat.includes('saturday'),
+    sunday: plant.repeat.includes('sunday'),
   });
-  const { plant, setPlant } = React.useContext(PlantContext);
 
   const onBackPress = () => {
     setPlant({ ...plant, repeat: repeatToArray(repeat) });

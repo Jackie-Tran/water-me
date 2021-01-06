@@ -4,3 +4,4 @@ export const GET_USER = (uid: string) => API + '/user/' + uid;
 export const CREATE_USER = API + '/user';
 
 export const GET_PLANTS = (uid: string) => API + '/plant/' + uid;
+export const CREATE_PLANT = API + '/plant';

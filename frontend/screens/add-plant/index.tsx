@@ -1,16 +1,15 @@
 import React from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import {
-  SafeAreaView,
-  withSafeAreaInsets,
-} from 'react-native-safe-area-context';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialIcons } from '@expo/vector-icons';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../constants/NavigationTypes';
 import PropertyButton from '../../components/property-button';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import PlantCard from '../../components/plant-card';
 import { PlantContext } from '../../context/plant-context';
+import { UserContext } from '../../context/user-context';
+import axios from 'axios';
+import * as API from '../../constants/endpoints';
 
 type NavProp = StackNavigationProp<RootStackParamList, 'Add Plant'>;
 
@@ -27,16 +26,26 @@ const generateImage = () => {
 };
 
 const AddPlantScreen: React.FC<Props> = ({ navigation }) => {
-
-    const { plant } = React.useContext(PlantContext);
+  const { user } = React.useContext(UserContext);
+  const { plant } = React.useContext(PlantContext);
+  const [waterTime, setWaterTime] = React.useState<Date>(new Date());
 
   const handleBackPress = () => {
     navigation.goBack();
   };
 
   const handleSavePress = () => {
-      navigation.goBack();
-  }
+    const { name, type, repeat } = plant;
+    const { uid } = user;
+    const time = waterTime.getHours() + ':' + waterTime.getMinutes();
+    axios.post(API.CREATE_PLANT, { name, type, waterTime: time, repeat, uid })
+    .then(res => {
+        navigation.goBack();
+    })
+    .catch(err => {
+        console.log(err);
+    })
+  };
 
   return (
     <SafeAreaView
@@ -56,11 +65,23 @@ const AddPlantScreen: React.FC<Props> = ({ navigation }) => {
         <View>
           <View style={styles.timeContainer}>
             <Text style={styles.text}>Water Time</Text>
-            <DateTimePicker style={styles.timePicker} value={new Date()} mode='time' display='default' onChange={(e, date) => {if (date) setWaterTime(date)}} />
+            <DateTimePicker
+              style={styles.timePicker}
+              value={waterTime}
+              mode="time"
+              display="default"
+              onChange={(e, date) => {
+                if (date) setWaterTime(date);
+              }}
+            />
           </View>
-          <PropertyButton label="Repeat" value={plant.repeat.toString()} route='Repeat' />
-          <PropertyButton label="Name" value={plant.name} route='Name' />
-          <PropertyButton label="Type" value={plant.type} route='Type' />
+          <PropertyButton
+            label="Repeat"
+            value={plant.repeat.toString()}
+            route="Repeat"
+          />
+          <PropertyButton label="Name" value={plant.name} route="Name" />
+          <PropertyButton label="Type" value={plant.type} route="Type" />
         </View>
         <TouchableOpacity style={styles.button} onPress={handleSavePress}>
           <Text style={styles.buttonText}>Save</Text>
@@ -124,9 +145,9 @@ const styles = StyleSheet.create({
     padding: '5%',
   },
   timePicker: {
-      width: '30%',
-      fontSize: 24,
-      marginRight: '5%',
+    width: '30%',
+    fontSize: 24,
+    marginRight: '5%',
   },
   button: {
     backgroundColor: '#52B788',

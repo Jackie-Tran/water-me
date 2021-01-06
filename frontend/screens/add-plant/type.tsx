@@ -5,8 +5,8 @@ import ScreenTemplate from '../../components/screen-template';
 import { PlantContext } from '../../context/plant-context';
 
 const TypeScreen: React.FC = () => {
-    const [type, setType] = React.useState<string>('');
     const { plant, setPlant } = React.useContext(PlantContext);
+    const [type, setType] = React.useState<string>(plant.type);
     const onBackPress = () => {
         // Update the type field in the plant context
         setPlant({ ...plant, type });
