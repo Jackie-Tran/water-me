@@ -3,7 +3,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialIcons } from '@expo/vector-icons';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '../../NavigationTypes';
+import { RootStackParamList } from '../../constants/NavigationTypes';
 import ScreenTemplate from '../../components/screen-template';
 import RepeatToggle from '../../components/repeat-toggle';
 

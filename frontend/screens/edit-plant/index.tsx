@@ -6,7 +6,7 @@ import {
 } from 'react-native-safe-area-context';
 import { MaterialIcons } from '@expo/vector-icons';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '../../NavigationTypes';
+import { RootStackParamList } from '../../constants/NavigationTypes';
 import PropertyButton from '../../components/property-button';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import ScreenTemplate from '../../components/screen-template';

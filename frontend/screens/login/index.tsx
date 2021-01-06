@@ -15,10 +15,10 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import DismissKeyboard from '../../components/dismiss-keyboard';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '../../NavigationTypes';
-import firebase from '../../firebase';
+import { RootStackParamList } from '../../constants/NavigationTypes';
+import firebase from '../../constants/firebase';
 import axios from 'axios';
-import * as API from '../../endpoints';
+import * as API from '../../constants/endpoints';
 import { UserContext } from '../../context/user-context';
 
 const generateEyeIcon = (isHidden: boolean): ReactElement => {
@@ -53,7 +53,7 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
         axios
           .get(API.GET_USER(uid))
           .then((res) => {
-            setUser(res.data);
+            setUser({ firstName: res.data.first_name, lastName: res.data.last_name, email: res.data.email, uid: res.data.uid });
             navigation.push('Tabs');
           })
           .catch((err) => {

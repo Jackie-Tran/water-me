@@ -4,7 +4,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { RootStackParamList } from './NavigationTypes';
+import { RootStackParamList } from './constants/NavigationTypes';
 import LoginScreen from './screens/login';
 import TabsScreen from './screens/tabs';
 import PlantsScreen from './screens/plants';
@@ -101,7 +101,7 @@ export default function App() {
             <Stack.Navigator screenOptions={{ headerShown: false }}>
             <Stack.Screen name="Login" component={LoginScreen} />
             <Stack.Screen name="Sign Up" component={SignUpScreen} />
-            <Stack.Screen name="Tabs"  options={{ gestureEnabled: false }} component={TabsScreen} />
+            <Stack.Screen name="Tabs"  options={{ gestureEnabled: true }} component={TabsScreen} />
             <Stack.Screen name="Add Plant" component={AddPlantScreen} />
             <Stack.Screen name="Repeat" component={RepeatScreen} />
             <Stack.Screen name="Name" component={NameScreen} />

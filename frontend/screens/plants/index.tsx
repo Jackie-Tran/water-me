@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   FlatList,
   StyleSheet,
@@ -10,43 +10,19 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialIcons } from '@expo/vector-icons';
 import PlantCard from '../../components/plant-card';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '../../NavigationTypes';
+import { RootStackParamList } from '../../constants/NavigationTypes';
+import { UserContext } from '../../context/user-context';
+import axios from 'axios';
+import * as API from '../../constants/endpoints';
 
-const data = [
-  {
-    name: 'Cassia',
-  },
-  {
-    name: 'Adonis',
-  },
-  {
-    name: 'Zinnia',
-  },
-  {
-    name: 'Poppy',
-  },
-  {
-    name: 'Marigold',
-  },
-  {
-    name: 'Marigold',
-  },
-  {
-    name: 'Marigold',
-  },
-  {
-    name: 'Marigold',
-  },
-  {
-    name: 'Marigold',
-  },
-  {
-    name: 'Marigold',
-  },
-  {
-    name: 'Marigold',
-  },
-];
+type Plant = {
+  id: number;
+  name: string;
+  type: string;
+  waterTime: string;
+  repeat: string[];
+  uid: string;
+};
 
 type NavProp = StackNavigationProp<RootStackParamList, 'Your Plants'>;
 
@@ -55,6 +31,20 @@ type Props = {
 };
 
 const PlantsScreen: React.FC<Props> = ({ navigation }) => {
+  const { user } = React.useContext(UserContext);
+  const [plants, setPlants] = React.useState<Plant[]>([]);
+
+  useEffect(() => {
+    axios
+      .get(API.GET_PLANTS(user.uid))
+      .then((res) => {
+        setPlants(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
   const handleBackPress = () => {
     navigation.goBack();
   };
@@ -75,7 +65,7 @@ const PlantsScreen: React.FC<Props> = ({ navigation }) => {
           paddingHorizontal: '10%',
           justifyContent: 'space-between',
         }}
-        data={data}
+        data={plants}
         renderItem={({ item }) => <PlantCard name={item.name} />}
         keyExtractor={(item, index) => index.toString()}
         ItemSeparatorComponent={() => <View style={{ height: 25 }} />}

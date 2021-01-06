@@ -48,7 +48,7 @@ router.get('/:uid', async (req: Request, res: Response, next: NextFunction) => {
     uid,
   ]);
   if (rows[0]) {
-    res.json(rows[0]);
+     return res.json(rows[0]);
   }
   res.status(404);
   res.json({ message: 'Unable find user with that uid' });
