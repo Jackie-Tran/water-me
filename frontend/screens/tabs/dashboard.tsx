@@ -9,6 +9,7 @@ import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { UserContext } from '../../context/user-context';
 import axios from 'axios';
 import * as API from '../../constants/endpoints';
+import { Plant } from '../../context/plant-context';
 
 const data = [
     {
@@ -27,15 +28,6 @@ const data = [
         name: 'Marigold'
     },
 ];
-
-type Plant = {
-    id: number;
-    name: string;
-    type: string;
-    waterTime: string;
-    repeat: string[];
-    uid: string;
-}
 
 type NavProp = CompositeNavigationProp<
     BottomTabNavigationProp<TabsParamList, 'Dashboard'>,
@@ -86,8 +78,8 @@ const DashboardScreen: React.FC<Props> = ({ navigation }) => {
                 <FlatList 
                     style={{ marginLeft: '5%', marginTop: '5%', paddingBottom: 25 }}
                     data={plants}
-                    renderItem={ ({ item }) => <PlantCard name={item.name}/> }
-                    keyExtractor={(item, index) => index.toString()}
+                    renderItem={ ({ item }) => <PlantCard id={item.id} name={item.name} type={item.type} waterTime={item.waterTime} repeat={item.repeat} uid={item.uid}/> }
+                    keyExtractor={(item) => item.id.toString()}
                     ItemSeparatorComponent={
                         () => <View style={{ width: 25 }}/>
                     }

@@ -3,16 +3,16 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../constants/NavigationTypes';
+import { Plant, PlantContext } from '../../context/plant-context';
 
-type Props = {
-  name: string;
-};
+const PlantCard: React.FC<Plant> = ({ id, name, type, waterTime, repeat, uid }) => {
 
-const PlantCard: React.FC<Props> = ({ name }) => {
-
+    const { setPlant } = React.useContext(PlantContext);
     const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
 
     const handlePress = () => {
+        // Set the plant context
+        setPlant({ id, name, type, waterTime, repeat, uid });
         navigation.navigate('Plant');
     }
 

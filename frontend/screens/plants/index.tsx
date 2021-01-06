@@ -14,15 +14,7 @@ import { RootStackParamList } from '../../constants/NavigationTypes';
 import { UserContext } from '../../context/user-context';
 import axios from 'axios';
 import * as API from '../../constants/endpoints';
-
-type Plant = {
-  id: number;
-  name: string;
-  type: string;
-  waterTime: string;
-  repeat: string[];
-  uid: string;
-};
+import { Plant } from '../../context/plant-context';
 
 type NavProp = StackNavigationProp<RootStackParamList, 'Your Plants'>;
 
@@ -66,7 +58,7 @@ const PlantsScreen: React.FC<Props> = ({ navigation }) => {
           justifyContent: 'space-between',
         }}
         data={plants}
-        renderItem={({ item }) => <PlantCard name={item.name} />}
+        renderItem={({ item }) => <PlantCard id={item.id} name={item.name} type={item.type} waterTime={item['waterTime']} repeat={item.repeat} uid={item.uid}/> }
         keyExtractor={(item, index) => index.toString()}
         ItemSeparatorComponent={() => <View style={{ height: 25 }} />}
         numColumns={2}
