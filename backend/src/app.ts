@@ -1,6 +1,7 @@
 require('dotenv').config();
 import express, { Application, Request, Response, NextFunction } from 'express';
-import bodyParser from 'body-parser';
+import bodyParser, { urlencoded } from 'body-parser';
+import cors from 'cors';
 // Routes
 const userRoute = require('./routes/user');
 const plantRoute = require('./routes/plant');
@@ -8,8 +9,9 @@ const plantRoute = require('./routes/plant');
 const app: Application = express();
 const PORT = 8080; // default port to listen
 
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(cors());
 
 app.use('/user', userRoute);
 app.use('/plant', plantRoute);

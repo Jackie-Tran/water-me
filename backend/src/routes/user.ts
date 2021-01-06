@@ -1,31 +1,44 @@
 import Router from 'express-promise-router';
 import { Request, Response, NextFunction, query } from 'express';
 import db from '../db';
+import firebase from '../db/firebase';
 
 const router = Router();
-
-type User = {
-  uid: string;
-  first_name: string;
-  last_name: string;
-  email: string;
-};
+const auth = firebase.auth();
 
 // Create user
 router.post('/', async (req: Request, res: Response, next: NextFunction) => {
-  const { uid, firstName, lastName, email } = req.body;
-  await db
-    .query(
-      'INSERT INTO public.users (uid, first_name, last_name, email) VALUES ($1, $2, $3, $4)',
-      [uid, firstName, lastName, email]
-    )
-    .then((queryResult) => {
-      res.json({ message: 'Successfully added a new user' });
-    })
-    .catch((err) => {
+  const { firstName, lastName, email, password } = req.body;
+  try {
+    // Create account in firebase auth
+    const { user: { uid } } = await auth.createUserWithEmailAndPassword(email, password);
+    // Query postgres db
+    await db.query('INSERT INTO public.users (uid, first_name, last_name, email) VALUES ($1, $2, $3, $4)', [uid, firstName, lastName, email]);
+    res.json({ message: 'Successfully added a new user' });
+  } catch (err) {
       res.status(412);
       res.json(err);
-    });
+  }
+});
+
+// Sign in user
+router.post('/signIn', async (req: Request, res: Response, next: NextFunction) => {
+    const { email, password } = req.body;
+    try {
+        const { user: { uid } } = await auth.signInWithEmailAndPassword(email, password);
+        // If sign in was successful, return user object from postgres
+        const { rows: [user] } = await db.query('SELECT * FROM public.users WHERE uid=$1', [uid]);
+        res.json(user);
+    } catch (err) {
+        // Unable to login
+        res.status(401);
+        res.json(err);
+    }
+});
+
+// Sign out user
+router.post('/signOut', async (req: Request, res: Response, next: NextFunction) => {
+    
 });
 
 // Read user
@@ -64,11 +77,16 @@ router.put('/:uid', async (req: Request, res: Response, next: NextFunction) => {
 });
 
 // Delete user
-router.delete('/:uid', async (req: Request, res: Response, next: NextFunction) => {
+router.delete(
+  '/:uid',
+  async (req: Request, res: Response, next: NextFunction) => {
     const { uid } = req.params;
-    const {rowCount} = await db.query('DELETE FROM public.users WHERE uid=$1', [uid]);
+    const { rowCount } = await db.query(
+      'DELETE FROM public.users WHERE uid=$1',
+      [uid]
+    );
     if (rowCount > 0) {
-        res.json({ message: 'Successfully deleted the user' });
+      res.json({ message: 'Successfully deleted the user' });
     }
     res.status(404);
     res.json({ message: 'Unable to delete the user with that uid' });

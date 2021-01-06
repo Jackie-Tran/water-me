@@ -6,6 +6,9 @@ import {
   TouchableOpacity,
   View,
   TextInput,
+  NativeSyntheticEvent,
+  TextInputChangeEventData,
+  Alert,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -13,6 +16,10 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import DismissKeyboard from '../../components/dismiss-keyboard';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../NavigationTypes';
+import firebase from '../../firebase';
+import axios from 'axios';
+import * as API from '../../endpoints';
+import { UserContext } from '../../context/user-context';
 
 const generateEyeIcon = (isHidden: boolean): ReactElement => {
   if (isHidden) {
@@ -28,10 +35,35 @@ type Props = {
 };
 
 const LoginScreen: React.FC<Props> = ({ navigation }) => {
+    const { user, setUser } = React.useContext(UserContext);
   const [isHidden, setHidden] = React.useState<boolean>(true);
+  const [email, setEmail] = React.useState<string>('');
+  const [password, setPassword] = React.useState<string>('');
 
   const handleLoginPress = () => {
-    navigation.push('Tabs');
+    if (!email || !password) {
+      return Alert.alert('Log In Error', 'Missing email and/or password');
+    }
+    firebase
+      .auth()
+      .signInWithEmailAndPassword(email, password)
+      .then((res) => {
+        // @ts-ignore
+        const { uid } = res.user;
+        axios.get(API.GET_USER(uid))
+          .then((res) => {
+            setUser(res.data);
+            navigation.push('Tabs');
+          })
+          .catch((err) => {
+            console.log(err);
+            Alert.alert('Error', 'There was an error signing in. Please try again.');
+          });
+      })
+      .catch((err) => {
+        console.log(err);
+        Alert.alert('Error', 'The email or password you entered is incorrect.');
+      });
   };
 
   return (
@@ -50,6 +82,7 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
                   style={styles.input}
                   textContentType="emailAddress"
                   placeholder="email"
+                  onChange={(e) => setEmail(e.nativeEvent.text)}
                 />
               </View>
               <View style={styles.textInput}>
@@ -59,6 +92,7 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
                   textContentType="password"
                   secureTextEntry={isHidden}
                   placeholder="password"
+                  onChange={(e) => setPassword(e.nativeEvent.text)}
                 />
                 <TouchableOpacity
                   style={{ marginRight: '3%' }}
@@ -77,7 +111,10 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
                   Forgot your password?
                 </Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.button} onPress={handleLoginPress}>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={handleLoginPress}
+              >
                 <Text style={styles.buttonText}>Log In</Text>
               </TouchableOpacity>
               <View style={{ flexDirection: 'row' }}>

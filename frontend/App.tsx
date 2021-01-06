@@ -47,10 +47,19 @@ import RepeatScreen from './screens/add-plant/repeat';
 import NameScreen from './screens/add-plant/name';
 import TypeScreen from './screens/add-plant/type';
 import EditPlantScreen from './screens/edit-plant';
+import { User, UserContext } from './context/user-context';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
 export default function App() {
+
+    const [user, setUser] = React.useState<User>({
+        uid: '',
+        firstName: '',
+        lastName: '',
+        email: ''
+    });
+
   const [fontsLoaded] = useFonts({
     Merriweather_300Light,
     Merriweather_300Light_Italic,
@@ -87,17 +96,19 @@ export default function App() {
   return (
     <SafeAreaProvider>
       <NavigationContainer>
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="Login" component={LoginScreen} />
-          <Stack.Screen name="Tabs"  options={{ gestureEnabled: false }} component={TabsScreen} />
-          <Stack.Screen name="Add Plant" component={AddPlantScreen} />
-          <Stack.Screen name="Repeat" component={RepeatScreen} />
-          <Stack.Screen name="Name" component={NameScreen} />
-          <Stack.Screen name="Type" component={TypeScreen} />
-          <Stack.Screen name="Your Plants" component={PlantsScreen} />
-          <Stack.Screen name="Plant" component={PlantScreen} />
-          <Stack.Screen name="Edit Plant" component={EditPlantScreen} />
-        </Stack.Navigator>
+        <UserContext.Provider value={{ user, setUser }}>
+            <Stack.Navigator screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="Login" component={LoginScreen} />
+            <Stack.Screen name="Tabs"  options={{ gestureEnabled: false }} component={TabsScreen} />
+            <Stack.Screen name="Add Plant" component={AddPlantScreen} />
+            <Stack.Screen name="Repeat" component={RepeatScreen} />
+            <Stack.Screen name="Name" component={NameScreen} />
+            <Stack.Screen name="Type" component={TypeScreen} />
+            <Stack.Screen name="Your Plants" component={PlantsScreen} />
+            <Stack.Screen name="Plant" component={PlantScreen} />
+            <Stack.Screen name="Edit Plant" component={EditPlantScreen} />
+            </Stack.Navigator>
+        </UserContext.Provider>
       </NavigationContainer>
     </SafeAreaProvider>
   );
