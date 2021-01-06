@@ -35,7 +35,7 @@ type Props = {
 };
 
 const LoginScreen: React.FC<Props> = ({ navigation }) => {
-    const { user, setUser } = React.useContext(UserContext);
+  const { user, setUser } = React.useContext(UserContext);
   const [isHidden, setHidden] = React.useState<boolean>(true);
   const [email, setEmail] = React.useState<string>('');
   const [password, setPassword] = React.useState<string>('');
@@ -50,14 +50,18 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
       .then((res) => {
         // @ts-ignore
         const { uid } = res.user;
-        axios.get(API.GET_USER(uid))
+        axios
+          .get(API.GET_USER(uid))
           .then((res) => {
             setUser(res.data);
             navigation.push('Tabs');
           })
           .catch((err) => {
             console.log(err);
-            Alert.alert('Error', 'There was an error signing in. Please try again.');
+            Alert.alert(
+              'Error',
+              'There was an error signing in. Please try again.'
+            );
           });
       })
       .catch((err) => {
@@ -65,6 +69,10 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
         Alert.alert('Error', 'The email or password you entered is incorrect.');
       });
   };
+
+  const handleSignUpPress = () => {
+      navigation.push('Sign Up');
+  }
 
   return (
     <ImageBackground
@@ -82,6 +90,7 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
                   style={styles.input}
                   textContentType="emailAddress"
                   placeholder="email"
+                  value={email}
                   onChange={(e) => setEmail(e.nativeEvent.text)}
                 />
               </View>
@@ -92,6 +101,7 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
                   textContentType="password"
                   secureTextEntry={isHidden}
                   placeholder="password"
+                  value={password}
                   onChange={(e) => setPassword(e.nativeEvent.text)}
                 />
                 <TouchableOpacity
@@ -119,7 +129,7 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
               </TouchableOpacity>
               <View style={{ flexDirection: 'row' }}>
                 <Text style={styles.text}>Don't have an account? </Text>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={handleSignUpPress}>
                   <Text style={[styles.text, { color: '#0066FF' }]}>
                     Create an account
                   </Text>

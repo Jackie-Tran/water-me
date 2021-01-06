@@ -1,5 +1,6 @@
 export type RootStackParamList = {
     Login: undefined;
+    "Sign Up": undefined;
     Tabs: undefined;
     'Add Plant': undefined;
     Repeat: undefined;

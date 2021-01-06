@@ -48,6 +48,7 @@ import NameScreen from './screens/add-plant/name';
 import TypeScreen from './screens/add-plant/type';
 import EditPlantScreen from './screens/edit-plant';
 import { User, UserContext } from './context/user-context';
+import SignUpScreen from './screens/sign-up';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -99,6 +100,7 @@ export default function App() {
         <UserContext.Provider value={{ user, setUser }}>
             <Stack.Navigator screenOptions={{ headerShown: false }}>
             <Stack.Screen name="Login" component={LoginScreen} />
+            <Stack.Screen name="Sign Up" component={SignUpScreen} />
             <Stack.Screen name="Tabs"  options={{ gestureEnabled: false }} component={TabsScreen} />
             <Stack.Screen name="Add Plant" component={AddPlantScreen} />
             <Stack.Screen name="Repeat" component={RepeatScreen} />
