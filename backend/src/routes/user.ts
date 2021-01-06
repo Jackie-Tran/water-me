@@ -21,6 +21,21 @@ router.post('/', async (req: Request, res: Response, next: NextFunction) => {
   }
 });
 
+// Sign in user
+router.post('/signIn', async (req: Request, res: Response, next: NextFunction) => {
+    const { email, password } = req.body;
+    try {
+        const { user: { uid } } = await auth.signInWithEmailAndPassword(email, password);
+        // If sign in was successful, return user object from postgres
+        const { rows: [user] } = await db.query('SELECT * FROM public.users WHERE uid=$1', [uid]);
+        res.json(user);
+    } catch (err) {
+        // Unable to login
+        res.status(401);
+        res.json(err);
+    }
+});
+
 // Read user
 router.get('/:uid', async (req: Request, res: Response, next: NextFunction) => {
   const { uid } = req.params;
