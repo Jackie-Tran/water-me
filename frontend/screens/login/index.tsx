@@ -19,6 +19,7 @@ import { RootStackParamList } from '../../NavigationTypes';
 import firebase from '../../firebase';
 import axios from 'axios';
 import * as API from '../../endpoints';
+import { UserContext } from '../../context/user-context';
 
 const generateEyeIcon = (isHidden: boolean): ReactElement => {
   if (isHidden) {
@@ -34,24 +35,35 @@ type Props = {
 };
 
 const LoginScreen: React.FC<Props> = ({ navigation }) => {
+    const { user, setUser } = React.useContext(UserContext);
   const [isHidden, setHidden] = React.useState<boolean>(true);
   const [email, setEmail] = React.useState<string>('');
   const [password, setPassword] = React.useState<string>('');
 
-  const handleLoginPress = async () => {
-      if (!email || !password) {
-          return Alert.alert('Log In Error', 'Missing email and/or password');
-      }
-      try {
+  const handleLoginPress = () => {
+    if (!email || !password) {
+      return Alert.alert('Log In Error', 'Missing email and/or password');
+    }
+    firebase
+      .auth()
+      .signInWithEmailAndPassword(email, password)
+      .then((res) => {
         // @ts-ignore
-        const { user: { uid } } = await firebase.auth().signInWithEmailAndPassword(email, password);
-        console.log(API.GET_USER(uid));
-        const { data: user } = await axios.get(API.GET_USER(uid));
-        console.log(user);
-      } catch (err) {
-        Alert.alert('Error', err);
-      }
-    // navigation.push('Tabs');
+        const { uid } = res.user;
+        axios.get(API.GET_USER(uid))
+          .then((res) => {
+            setUser(res.data);
+            navigation.push('Tabs');
+          })
+          .catch((err) => {
+            console.log(err);
+            Alert.alert('Error', 'There was an error signing in. Please try again.');
+          });
+      })
+      .catch((err) => {
+        console.log(err);
+        Alert.alert('Error', 'The email or password you entered is incorrect.');
+      });
   };
 
   return (
@@ -99,7 +111,10 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
                   Forgot your password?
                 </Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.button} onPress={handleLoginPress}>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={handleLoginPress}
+              >
                 <Text style={styles.buttonText}>Log In</Text>
               </TouchableOpacity>
               <View style={{ flexDirection: 'row' }}>
