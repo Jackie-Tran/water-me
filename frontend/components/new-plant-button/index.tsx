@@ -12,8 +12,12 @@ import {
   useNavigation,
 } from '@react-navigation/native';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
-import { RootStackParamList, TabsParamList } from '../../constants/NavigationTypes';
+import {
+  RootStackParamList,
+  TabsParamList,
+} from '../../constants/NavigationTypes';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { PlantContext } from '../../context/plant-context';
 
 type NavProp = CompositeNavigationProp<
   BottomTabNavigationProp<TabsParamList>,
@@ -21,9 +25,18 @@ type NavProp = CompositeNavigationProp<
 >;
 
 const NewPlantButton: React.FC = () => {
+  const { setPlant } = React.useContext(PlantContext);
   const navigation = useNavigation<NavProp>();
 
   const handlePress = () => {
+    setPlant({
+        id: -1,
+        name: '',
+        type: '',
+        waterTime: '',
+        repeat: [],
+        uid: '',
+    })
     navigation.navigate('Add Plant');
   };
   return (
