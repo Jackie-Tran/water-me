@@ -5,3 +5,4 @@ export const CREATE_USER = API + '/user';
 
 export const GET_PLANTS = (uid: string) => API + '/plant/' + uid;
 export const CREATE_PLANT = API + '/plant';
+export const DELETE_PLANT = (id: string | number) => API + '/plant/' + id;
