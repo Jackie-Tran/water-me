@@ -18,6 +18,8 @@ import PropertyButton from '../../components/property-button';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import ScreenTemplate from '../../components/screen-template';
 import { PlantContext } from '../../context/plant-context';
+import axios from 'axios';
+import * as API from '../../constants/endpoints';
 
 type NavProp = StackNavigationProp<RootStackParamList, 'Add Plant'>;
 
@@ -49,8 +51,13 @@ const EditPlantScreen: React.FC<Props> = ({ navigation }) => {
         {
           text: 'Delete',
           onPress: () => {
-            console.log(plant);
-            navigation.pop(2);
+            axios.delete(API.DELETE_PLANT(plant.id))
+            .then(res => {
+                navigation.pop(2);
+            })
+            .catch(err => {
+                console.log(err);
+            });
           },
         },
         {
