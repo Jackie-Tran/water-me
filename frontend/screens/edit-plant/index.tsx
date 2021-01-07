@@ -35,12 +35,31 @@ const generateImage = () => {
   );
 };
 
+const timeToDate = (time: string): Date => {
+  const timeArr: string[] = time.split(':');
+  let date = new Date();
+  date.setHours(parseInt(timeArr[0]));
+  date.setMinutes(parseInt(timeArr[1]));
+  return date;
+};
+
 const EditPlantScreen: React.FC<Props> = ({ navigation }) => {
   const { plant } = React.useContext(PlantContext);
-  const [waterTime, setWaterTime] = React.useState<Date>(new Date());
+  const [waterTime, setWaterTime] = React.useState<Date>(
+    timeToDate(plant.waterTime)
+  );
 
   const handleSavePress = () => {
-    navigation.goBack();
+    const { id, name, type, repeat } = plant;
+    const time = waterTime.getHours() + ':' + waterTime.getMinutes();
+    axios
+      .put(API.UPDATE_PLANT(id), { name, type, waterTime: time, repeat })
+      .then((res) => {
+        navigation.goBack();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const onDeletePress = () => {
@@ -51,13 +70,14 @@ const EditPlantScreen: React.FC<Props> = ({ navigation }) => {
         {
           text: 'Delete',
           onPress: () => {
-            axios.delete(API.DELETE_PLANT(plant.id))
-            .then(res => {
+            axios
+              .delete(API.DELETE_PLANT(plant.id))
+              .then((res) => {
                 navigation.pop(2);
-            })
-            .catch(err => {
+              })
+              .catch((err) => {
                 console.log(err);
-            });
+              });
           },
         },
         {
@@ -69,7 +89,12 @@ const EditPlantScreen: React.FC<Props> = ({ navigation }) => {
   };
 
   return (
-    <ScreenTemplate title="Edit Plant" showBack showDelete onDeletePress={onDeletePress}>
+    <ScreenTemplate
+      title="Edit Plant"
+      showBack
+      showDelete
+      onDeletePress={onDeletePress}
+    >
       <View style={styles.content}>
         <TouchableOpacity style={styles.imageContainer}>
           <Image
@@ -82,14 +107,18 @@ const EditPlantScreen: React.FC<Props> = ({ navigation }) => {
             <Text style={styles.text}>Time</Text>
             <DateTimePicker
               style={styles.timePicker}
-              value={new Date()}
+              value={waterTime}
               mode="time"
               display="default"
             />
           </View>
-          <PropertyButton label="Repeat" value={ plant.repeat.toString() } route="Repeat" />
-          <PropertyButton label="Name" value={ plant.name } route="Name" />
-          <PropertyButton label="Type" value={ plant.type } route="Type" />
+          <PropertyButton
+            label="Repeat"
+            value={plant.repeat.toString()}
+            route="Repeat"
+          />
+          <PropertyButton label="Name" value={plant.name} route="Name" />
+          <PropertyButton label="Type" value={plant.type} route="Type" />
         </View>
         <TouchableOpacity style={styles.button} onPress={handleSavePress}>
           <Text style={styles.buttonText}>Save</Text>
