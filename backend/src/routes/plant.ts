@@ -1,8 +1,28 @@
 import Router from 'express-promise-router';
 import { Request, Response, NextFunction } from 'express';
 import db from '../db';
+import { json } from 'body-parser';
 
 const router = Router();
+
+const parseDay = (day: number): string => {
+  switch (day) {
+    case 0:
+      return 'sunday';
+    case 1:
+      return 'monday';
+    case 2:
+      return 'tuesday';
+    case 3:
+      return 'wednesday';
+    case 4:
+      return 'thursday';
+    case 5:
+      return 'friday';
+    case 6:
+      return 'saturday';
+  }
+};
 
 // Create plant
 router.post('/', async (req: Request, res: Response, next: NextFunction) => {
@@ -30,25 +50,50 @@ router.get('/:uid', async (req: Request, res: Response, next: NextFunction) => {
     let { rows } = await db.query('SELECT * FROM public.plants WHERE uid=$1', [
       uid,
     ]);
-    
+
     // Fix output
-    rows.forEach((e: { [x: string]: any; waterTime: any; }) => {
+    rows.forEach((e: { [x: string]: any; waterTime: any }) => {
+      e.waterTime = e['water_time'];
+      e.repeat = e.repeat.match(/[\w.-]+/g).map(String);
+      delete e['water_time'];
+    });
+    res.json(rows);
+  } catch (err) {
+    res.status(404);
+    res.json(err);
+  }
+});
+
+// Get water soon plants
+router.get('/:uid/waterSoon', async (req: Request, res: Response, next: NextFunction) => {
+    const { uid } = req.params;
+    const date = new Date();
+    const day = parseDay(date.getDay());
+    const time = date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+    // res.json({ date, day, time });
+    try {
+      let { rows } = await db.query("SELECT * FROM public.plants WHERE uid=$1 AND $2 = ANY (repeat) AND water_time > $3",
+        [uid, day, time]
+      );
+    // Fix output
+      rows.forEach((e: { [x: string]: any; waterTime: any }) => {
         e.waterTime = e['water_time'];
         e.repeat = e.repeat.match(/[\w.-]+/g).map(String);
         delete e['water_time'];
-    })
-    res.json(rows);
-  } catch (err) {
+      });
+      res.json(rows);
+    } catch (err) {
       res.status(404);
       res.json(err);
+    }
   }
-});
+);
 
 // Update plant
 router.put('/:id', async (req: Request, res: Response, next: NextFunction) => {
   const { id } = req.params;
   const { name, type, waterTime, repeat } = req.body;
-  
+
   let query = 'UPDATE public.plants SET ';
   // Build query
   if (name) {
@@ -65,20 +110,26 @@ router.put('/:id', async (req: Request, res: Response, next: NextFunction) => {
   }
   query = query.substr(0, query.lastIndexOf(','));
   query += " WHERE id='" + id + "'";
-  
+
   const { rowCount } = await db.query(query, []);
   res.json({ message: 'Updated ' + rowCount + ' plant' });
 });
 
 // Delete plant
-router.delete('/:id', async (req: Request, res: Response, next: NextFunction) => {
+router.delete(
+  '/:id',
+  async (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.params;
-    const {rowCount} = await db.query('DELETE FROM public.plants WHERE id=$1', [id]);
+    const { rowCount } = await db.query(
+      'DELETE FROM public.plants WHERE id=$1',
+      [id]
+    );
     if (rowCount > 0) {
-        res.json({ message: 'Successfully deleted the plant' });
+      res.json({ message: 'Successfully deleted the plant' });
     }
     res.status(404);
     res.json({ message: 'Unable to delete the plant with that id' });
-});
+  }
+);
 
 module.exports = router;
