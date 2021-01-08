@@ -54,6 +54,7 @@ type Props = {
 const DashboardScreen: React.FC<Props> = ({ navigation }) => {
   const { user, setUser } = React.useContext(UserContext);
   const [plants, setPlants] = React.useState<Plant[]>([]);
+  const [upComingPlants, setUpcomingPlants] = React.useState<Plant[]>([]);
 
   // Fetch user's plants and water soon
   useFocusEffect(
@@ -63,6 +64,15 @@ const DashboardScreen: React.FC<Props> = ({ navigation }) => {
         .get(API.GET_PLANTS(user.uid))
         .then((res) => {
           setPlants(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+
+      axios
+        .get(API.GET_UPCOMING_PLANTS(user.uid))
+        .then((res) => {
+          setUpcomingPlants(res.data);
         })
         .catch((err) => {
           console.log(err);
@@ -116,19 +126,24 @@ const DashboardScreen: React.FC<Props> = ({ navigation }) => {
         <View style={styles.sectionHeader}>
           <Text style={styles.sectionTitle}>Water Soon</Text>
         </View>
-        {/* <FlatList 
-                    style={{ marginLeft: '5%', marginTop: '5%', paddingBottom: 25 }}
-                    data={data}
-                    renderItem={ ({ item }) => <PlantCard name={item.name} /> }
-                    keyExtractor={(item, index) => index.toString()}
-                    ItemSeparatorComponent={
-                        () => <View style={{ width: 25 }}/>
-                    }
-                    ListFooterComponent={
-                        () => <View style={{ width: 25 }}/>
-                    }
-                    horizontal
-                /> */}
+        <FlatList
+          style={{ marginLeft: '5%', marginTop: '5%', paddingBottom: 25 }}
+          data={upComingPlants}
+          renderItem={({ item }) => (
+            <PlantCard
+              id={item.id}
+              name={item.name}
+              type={item.type}
+              waterTime={item.waterTime}
+              repeat={item.repeat}
+              uid={item.uid}
+            />
+          )}
+          keyExtractor={(item, index) => index.toString()}
+          ItemSeparatorComponent={() => <View style={{ width: 25 }} />}
+          ListFooterComponent={() => <View style={{ width: 25 }} />}
+          horizontal
+        />
       </View>
     </SafeAreaView>
   );
