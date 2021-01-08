@@ -13,6 +13,7 @@ const PlantCard: React.FC<Plant> = ({ id, name, type, waterTime, repeat, uid }) 
     const handlePress = () => {
         // Set the plant context
         setPlant({ id, name, type, waterTime, repeat, uid });
+        console.log(repeat);
         navigation.navigate('Plant');
     }
 

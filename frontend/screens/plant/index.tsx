@@ -6,6 +6,7 @@ import { RootStackParamList } from '../../constants/NavigationTypes';
 import { MaterialIcons } from '@expo/vector-icons';
 import ScreenTemplate from '../../components/screen-template';
 import { PlantContext } from '../../context/plant-context';
+import * as Functions from '../../constants/functions'
 
 type NavProp = StackNavigationProp<RootStackParamList, 'Your Plants'>;
 
@@ -23,13 +24,13 @@ const PlantScreen: React.FC<Props> = ({ navigation }) => {
             style={styles.image}
             source={require('../../assets/dashboard/plant.jpg')}
           />
-          <Text style={[styles.text, { fontSize: 36 }]}>{ plant.type }</Text>
+          <Text style={[styles.text, { fontSize: 36 }]} onPress={() => console.log(plant.repeat)} >{ plant.type }</Text>
         </View>
         <View style={styles.details}>
           <Text style={[styles.text, { fontSize: 24 }]}>
             Water Time: { plant.waterTime }
           </Text>
-          <Text style={[styles.text, { fontSize: 24 }]}>{ plant.repeat }</Text>
+          <Text style={[styles.text, { fontSize: 24 }]}>Repeat: { Functions.repeatToString(plant.repeat) }</Text>
         </View>
       </View>
     </ScreenTemplate>

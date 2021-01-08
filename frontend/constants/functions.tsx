@@ -30,12 +30,11 @@ export const repeatToString = (repeat: string[]): string => {
         return 'weekend'
     } else {
         // Convert days to short terms
-        let formatedRepeat: string[] = repeat;
-        formatedRepeat.map((day, index) => {
-            return repeat[index] = shortenDay(day);
-        })
-
-        return formatedRepeat.toString();
+        let result = '';
+        repeat.forEach(e => {
+            result += shortenDay(e) + ', '
+        });
+        return result.substr(0, result.length - 2);
     }
 
 }
