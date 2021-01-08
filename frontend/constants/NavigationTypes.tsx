@@ -9,6 +9,7 @@ export type RootStackParamList = {
     'Your Plants': undefined;
     Plant: undefined;
     'Edit Plant': undefined;
+    Camera: undefined;
 }
 
 export type TabsParamList = {

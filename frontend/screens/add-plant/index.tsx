@@ -18,14 +18,6 @@ type Props = {
   navigation: NavProp;
 };
 
-const generateImage = () => {
-  return (
-    <TouchableOpacity style={styles.imageContainer}>
-      <Text>Click to add an image</Text>
-    </TouchableOpacity>
-  );
-};
-
 const AddPlantScreen: React.FC<Props> = ({ navigation }) => {
   const { user } = React.useContext(UserContext);
   const { plant } = React.useContext(PlantContext);
@@ -48,6 +40,10 @@ const AddPlantScreen: React.FC<Props> = ({ navigation }) => {
     })
   };
 
+  const handleImagePress = () => {
+    navigation.push('Camera');
+  };
+
   return (
     <SafeAreaView
       style={{ alignItems: 'center', flex: 1 }}
@@ -62,7 +58,11 @@ const AddPlantScreen: React.FC<Props> = ({ navigation }) => {
         <Text style={styles.headerText}>Add Plant</Text>
       </View>
       <View style={styles.content}>
-        <View>{generateImage()}</View>
+        <View>
+            <TouchableOpacity style={styles.imageContainer} onPress={handleImagePress}>
+                <Text>Click to add an image</Text>
+            </TouchableOpacity>
+        </View>
         <View>
           <View style={styles.timeContainer}>
             <Text style={styles.text}>Water Time</Text>

@@ -50,6 +50,7 @@ import EditPlantScreen from './screens/edit-plant';
 import { User, UserContext } from './context/user-context';
 import SignUpScreen from './screens/sign-up';
 import { Plant, PlantContext } from './context/plant-context';
+import CameraScreen from './screens/camera';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -109,7 +110,7 @@ export default function App() {
         <UserContext.Provider value={{ user, setUser }}>
           <PlantContext.Provider value={{ plant, setPlant }}>
             <Stack.Navigator screenOptions={{ headerShown: false }}>
-              <Stack.Screen name="Login" component={LoginScreen} />
+              {/* <Stack.Screen name="Login" component={LoginScreen} />
               <Stack.Screen name="Sign Up" component={SignUpScreen} />
               <Stack.Screen
                 name="Tabs"
@@ -122,7 +123,8 @@ export default function App() {
               <Stack.Screen name="Add Plant" component={AddPlantScreen} />
               <Stack.Screen name="Repeat" component={RepeatScreen} />
               <Stack.Screen name="Name" component={NameScreen} />
-              <Stack.Screen name="Type" component={TypeScreen} />
+              <Stack.Screen name="Type" component={TypeScreen} /> */}
+              <Stack.Screen name="Camera" component={CameraScreen} />
             </Stack.Navigator>
           </PlantContext.Provider>
         </UserContext.Provider>

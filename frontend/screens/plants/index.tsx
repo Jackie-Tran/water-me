@@ -26,7 +26,6 @@ type Props = {
 const PlantsScreen: React.FC<Props> = ({ navigation }) => {
   const { user } = React.useContext(UserContext);
   const [plants, setPlants] = React.useState<Plant[]>([]);
-  const [upComingPlants, setUpcomingPlants] = React.useState<Plant[]>([]);
 
   useFocusEffect(
     useCallback(() => {
