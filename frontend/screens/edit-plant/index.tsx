@@ -20,6 +20,7 @@ import ScreenTemplate from '../../components/screen-template';
 import { PlantContext } from '../../context/plant-context';
 import axios from 'axios';
 import * as API from '../../constants/endpoints';
+import * as Functions from '../../constants/functions';
 
 type NavProp = StackNavigationProp<RootStackParamList, 'Add Plant'>;
 
@@ -114,7 +115,7 @@ const EditPlantScreen: React.FC<Props> = ({ navigation }) => {
           </View>
           <PropertyButton
             label="Repeat"
-            value={plant.repeat.toString()}
+            value={Functions.repeatToString(plant.repeat)}
             route="Repeat"
           />
           <PropertyButton label="Name" value={plant.name} route="Name" />
