@@ -10,6 +10,7 @@ import { PlantContext } from '../../context/plant-context';
 import { UserContext } from '../../context/user-context';
 import axios from 'axios';
 import * as API from '../../constants/endpoints';
+import * as Functions from '../../constants/functions';
 
 type NavProp = StackNavigationProp<RootStackParamList, 'Add Plant'>;
 
@@ -77,7 +78,7 @@ const AddPlantScreen: React.FC<Props> = ({ navigation }) => {
           </View>
           <PropertyButton
             label="Repeat"
-            value={plant.repeat.toString()}
+            value={ Functions.repeatToString(plant.repeat) }
             route="Repeat"
           />
           <PropertyButton label="Name" value={plant.name} route="Name" />

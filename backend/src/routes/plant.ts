@@ -34,6 +34,7 @@ router.get('/:uid', async (req: Request, res: Response, next: NextFunction) => {
     // Fix output
     rows.forEach((e: { [x: string]: any; waterTime: any; }) => {
         e.waterTime = e['water_time'];
+        e.repeat = e.repeat.match(/[\w.-]+/g).map(String);
         delete e['water_time'];
     })
     res.json(rows);
