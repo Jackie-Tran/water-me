@@ -24,6 +24,8 @@ export const repeatToString = (repeat: string[]): string => {
     // Single day
     if (repeat.length === 1) {
         return repeat[0];
+    } else if (repeat.includes('monday') && repeat.includes('tuesday') && repeat.includes('wednesday') && repeat.includes('thursday') && repeat.includes('friday') && repeat.includes('saturday') && repeat.includes('sunday')) {
+        return 'everyday';
     } else if (repeat.includes('monday') && repeat.includes('tuesday') && repeat.includes('wednesday') && repeat.includes('thursday') && repeat.includes('friday')) {
         return 'weekday';
     } else if (repeat.includes('saturday') && repeat.includes('sunday')) {
