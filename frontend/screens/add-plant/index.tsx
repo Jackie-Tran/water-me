@@ -68,7 +68,27 @@ const AddPlantScreen: React.FC<Props> = ({ navigation }) => {
             }
         },
         {
-            text: 'New Photo'
+            text: 'New Photo',
+            onPress: async () => {
+                if (Platform.OS !== 'web') {
+                    const { status } = await ImagePicker.requestCameraPermissionsAsync();
+                    if (status !== 'granted') {
+                        return alert('Sorry, we need camera permission to make this work!');
+                    }
+                    let result = await ImagePicker.launchCameraAsync({
+                        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+                        allowsEditing: true,
+                        aspect: [4, 3],
+                        quality: 1,
+                    });
+
+                    console.log(result);
+
+                    if (!result.cancelled) {
+                        setImage(result.uri);
+                    }
+                }
+            }
         }
     ])
     // navigation.push('Camera', { setImage });
