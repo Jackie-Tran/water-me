@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, Image, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialIcons } from '@expo/vector-icons';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -11,7 +11,7 @@ import { UserContext } from '../../context/user-context';
 import axios from 'axios';
 import * as API from '../../constants/endpoints';
 import * as Functions from '../../constants/functions';
-import { CameraCapturedPicture } from 'expo-camera';
+import * as ImagePicker from 'expo-image-picker';
 
 type NavProp = StackNavigationProp<RootStackParamList, 'Add Plant'>;
 
@@ -23,11 +23,10 @@ const AddPlantScreen: React.FC<Props> = ({ navigation }) => {
   const { user } = React.useContext(UserContext);
   const { plant } = React.useContext(PlantContext);
   const [waterTime, setWaterTime] = React.useState<Date>(new Date());
-  const [image, setImage] = React.useState<CameraCapturedPicture>();
+  const [image, setImage] = React.useState<string>('');
 
   const handleBackPress = () => {
     // navigation.goBack();
-    console.log(image?.uri);
   };
 
   const handleSavePress = () => {
@@ -44,7 +43,35 @@ const AddPlantScreen: React.FC<Props> = ({ navigation }) => {
   };
 
   const handleImagePress = () => {
-    navigation.push('Camera', { setImage });
+    Alert.alert('Image Upload', 'Would you like to upload an existing photo or take a new one?', [
+        {
+            text: 'Camera Roll',
+            onPress: async () => {
+                if (Platform.OS !== 'web') {
+                    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+                    if (status !== 'granted') {
+                        return alert('Sorry, we need camera roll permission to make this work!');
+                    }
+                    let result = await ImagePicker.launchImageLibraryAsync({
+                        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+                        allowsEditing: true,
+                        aspect: [4, 3],
+                        quality: 1,
+                    });
+
+                    console.log(result);
+
+                    if (!result.cancelled) {
+                        setImage(result.uri);
+                    }
+                }
+            }
+        },
+        {
+            text: 'New Photo'
+        }
+    ])
+    // navigation.push('Camera', { setImage });
   };
 
   return (
@@ -64,7 +91,7 @@ const AddPlantScreen: React.FC<Props> = ({ navigation }) => {
         <View>
             <TouchableOpacity style={styles.imageContainer} onPress={handleImagePress}>
                 {image
-                    ? <Image style={styles.image} source={{ uri: image.uri }}/>
+                    ? <Image style={styles.image} source={{ uri: image }}/>
                     :<Text>Click to add an image</Text>
                 }
             </TouchableOpacity>
