@@ -1,3 +1,5 @@
+import { CameraCapturedPicture } from "expo-camera"
+
 export type RootStackParamList = {
     Login: undefined;
     "Sign Up": undefined;
@@ -9,7 +11,7 @@ export type RootStackParamList = {
     'Your Plants': undefined;
     Plant: undefined;
     'Edit Plant': undefined;
-    Camera: undefined;
+    Camera: { setImage: React.Dispatch<React.SetStateAction<CameraCapturedPicture | undefined>> };
 }
 
 export type TabsParamList = {

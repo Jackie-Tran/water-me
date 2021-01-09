@@ -119,9 +119,9 @@ export default function App() {
               />
               <Stack.Screen name="Your Plants" component={PlantsScreen} />
               <Stack.Screen name="Plant" component={PlantScreen} />
-              <Stack.Screen name="Edit Plant" component={EditPlantScreen} />
-              <Stack.Screen name="Add Plant" component={AddPlantScreen} />
-              <Stack.Screen name="Repeat" component={RepeatScreen} />
+              <Stack.Screen name="Edit Plant" component={EditPlantScreen} /> */}
+              {/* <Stack.Screen name="Add Plant" component={AddPlantScreen} /> */}
+              {/* <Stack.Screen name="Repeat" component={RepeatScreen} />
               <Stack.Screen name="Name" component={NameScreen} />
               <Stack.Screen name="Type" component={TypeScreen} /> */}
               <Stack.Screen name="Camera" component={CameraScreen} />

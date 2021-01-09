@@ -1,77 +1,72 @@
 import React from 'react';
 import { Camera } from 'expo-camera';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, Image, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../../constants/NavigationTypes';
+import { RouteProp } from '@react-navigation/native';
+import * as ImagePicker from 'expo-image-picker';
 
-const CameraScreen: React.FC = () => {
-  const [hasPermission, setHasPermission] = React.useState<boolean>();
-  const [type, setType] = React.useState(Camera.Constants.Type.front);
-  const camera = React.useRef<Camera>(null);
+type NavProp = StackNavigationProp<RootStackParamList, 'Camera'>;
+
+type Props = {
+  navigation: NavProp;
+  route: RouteProp<RootStackParamList, 'Camera'>;
+};
+
+const CameraScreen: React.FC<Props> = ({ navigation, route }) => {
+  const [image, setImage] = React.useState<string>('');
 
   React.useEffect(() => {
-    (async () => {
-      const { status } = await Camera.requestPermissionsAsync();
-      setHasPermission(status === 'granted');
-    })();
-  }, []);
+      (async () => {
+          if (Platform.OS !== 'web') {
+              const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+              if (status !== 'granted') {
+                  alert('Sorry, we need camera roll permission to make this work!');
+              }
+              await ImagePicker.requestCameraPermissionsAsync();
+          }
+      })();
+  }, [])
 
-  const handleFlipCameraPress = () => {
-      if (type === Camera.Constants.Type.front) {
-          setType(Camera.Constants.Type.back);
-      } else {
-          setType(Camera.Constants.Type.front);
+  const pickImage = async () => {
+      let result = await ImagePicker.launchImageLibraryAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.Images,
+          allowsEditing: true,
+          aspect: [4, 3],
+          quality: 1,
+      });
+
+      console.log(result);
+
+      if (!result.cancelled) {
+          setImage(result.uri);
       }
   }
 
-  const handleCapture = () => {
-      camera.current?.takePictureAsync({ quality: 0.5 })
-      .then(picture => {
-        console.log(picture);
-        camera.current?.pausePreview();
-        Alert.alert('Confirm Image', 'Would you like to use this image?',
-            [
-                {
-                    text: 'Yes',
-                    onPress: () => {
-                        camera.current?.resumePreview();
-                    }
-                },
-                {
-                    text: 'Retake',
-                    onPress: () => {
-                        camera.current?.resumePreview();
-                    }
-                }
-            ]
-        );
+  const takePicture = async () => {
+      let result = await ImagePicker.launchCameraAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.Images,
+          allowsEditing: true,
+          quality: 1,
       })
-      .catch(err => {
-          console.log(err);
-      })
-  }
 
-  if (hasPermission === null) {
-    return <SafeAreaView />;
-  }
-
-  if (hasPermission === false) {
-    return <Text>No access to camera</Text>;
+      console.log(result);
+      if (!result.cancelled) {
+          setImage(result.uri);
+      }
   }
 
   return (
     <View style={styles.background}>
       <SafeAreaView style={styles.container}>
-        <Camera style={styles.camera} type={type} autoFocus ref={camera}>
-          <View></View>
-          <View style={styles.bar}>
-            <View style={{ width: 50 }} />
-            <TouchableOpacity style={styles.captureButton} onPress={handleCapture}></TouchableOpacity>
-            <TouchableOpacity onPress={handleFlipCameraPress}>
-              <MaterialIcons name="swap-vert" size={50} color="white" />
-            </TouchableOpacity>
-          </View>
-        </Camera>
+          <TouchableOpacity onPress={pickImage}>
+              <Text>Choose Image</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={takePicture}>
+              <Text>Take Picture</Text>
+          </TouchableOpacity>
       </SafeAreaView>
     </View>
   );
@@ -84,6 +79,8 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   camera: {
     flex: 1,

@@ -11,6 +11,7 @@ import { UserContext } from '../../context/user-context';
 import axios from 'axios';
 import * as API from '../../constants/endpoints';
 import * as Functions from '../../constants/functions';
+import { CameraCapturedPicture } from 'expo-camera';
 
 type NavProp = StackNavigationProp<RootStackParamList, 'Add Plant'>;
 
@@ -22,9 +23,11 @@ const AddPlantScreen: React.FC<Props> = ({ navigation }) => {
   const { user } = React.useContext(UserContext);
   const { plant } = React.useContext(PlantContext);
   const [waterTime, setWaterTime] = React.useState<Date>(new Date());
+  const [image, setImage] = React.useState<CameraCapturedPicture>();
 
   const handleBackPress = () => {
-    navigation.goBack();
+    // navigation.goBack();
+    console.log(image?.uri);
   };
 
   const handleSavePress = () => {
@@ -41,7 +44,7 @@ const AddPlantScreen: React.FC<Props> = ({ navigation }) => {
   };
 
   const handleImagePress = () => {
-    navigation.push('Camera');
+    navigation.push('Camera', { setImage });
   };
 
   return (
@@ -60,7 +63,10 @@ const AddPlantScreen: React.FC<Props> = ({ navigation }) => {
       <View style={styles.content}>
         <View>
             <TouchableOpacity style={styles.imageContainer} onPress={handleImagePress}>
-                <Text>Click to add an image</Text>
+                {image
+                    ? <Image style={styles.image} source={{ uri: image.uri }}/>
+                    :<Text>Click to add an image</Text>
+                }
             </TouchableOpacity>
         </View>
         <View>
@@ -126,7 +132,7 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     width: 250,
-    height: 250,
+    height: 300,
     borderWidth: 1,
     borderRadius: 5,
     borderStyle: 'dashed',
@@ -134,6 +140,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginVertical: '5%',
+  },
+  image: {
+    width: '100%',
+    height: '100%',
+    resizeMode: 'cover',
   },
   timeContainer: {
     flexDirection: 'row',
